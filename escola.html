@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Colégio</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+
+    background-image:url("images/fundo_escola.jpeg");
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.25);
+
+    pointer-events:none;
+
+}
+
+
+
+.missao{
+    position:absolute;
+    top:15px;
+    left:15px;
+
+    width:180px;
+
+    background:rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+
+    color:#fff;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    border:2px solid rgba(255,255,255,0.15);
+
+    box-shadow:0 6px 18px rgba(0,0,0,0.4);
+
+    text-align:left;
+}
+
+.missao h2{
+    margin:0 0 8px;
+    font-size:22px;
+}
+
+.missao p{
+    margin:0;
+    font-size:14px;
+    line-height:1.4;
+}
+
+#contador{
+    margin-top:10px;
+    font-size:28px;
+    font-weight:bold;
+    color:#7CFF7C;
+}
+
+.foto{
+
+    width:80px;
+    height:80px;
+
+    position:absolute;
+
+    cursor:pointer;
+
+    background-color:#ffd84d;
+    background-size:cover;
+    background-position:center;
+    border:2px solid #fff;
+    border-radius:12px;
+
+    animation:brilhar 1s infinite alternate;
+}
+
+/* posições dos pedaços */
+
+#f1{
+    top:150px;
+    left:220px;
+}
+
+#f2{
+    top:300px;
+    left:500px;
+}
+
+#f3{
+    top:180px;
+    left:800px;
+}
+
+#f4{
+    top:400px;
+    left:1000px;
+}
+
+#f5{
+    top:450px;
+    left:350px;
+}
+
+#f6{
+    top:550px;
+    left:700px;
+}
+
+.fotoEscola{
+    display:none;
+    position:fixed;
+    top:8%;
+    left:50%;
+    transform:translateX(-50%);
+    width:50vw;
+    max-width:420px;
+    max-height:55vh;
+    padding:16px;
+    background:rgba(8, 17, 34, 0.95);
+    border:2px solid #60c4ff;
+    border-radius:20px;
+    box-shadow:0 0 30px rgba(0,0,0,0.7);
+    z-index:999;
+    text-align:center;
+    overflow:hidden;
+    box-sizing:border-box;
+}
+
+.fotoEscola h2{
+    margin:0 0 12px;
+    font-size:22px;
+    color:#60c4ff;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.fotoEscola img{
+    width:100%;
+    height:auto;
+    max-height:calc(55vh - 110px);
+    display:block;
+    border-radius:14px;
+    margin-bottom:12px;
+    object-fit:cover;
+}
+
+.fotoEscola .recompensa-texto{
+    color:#fff;
+    font-size:16px;
+    line-height:1.4;
+    margin-bottom:10px;
+}
+
+.dialogo{
+    display:none;
+
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:500px;
+    max-width:80%;
+
+    background:rgba(15,23,42,0.95);
+
+    color:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    border:2px solid rgba(255,255,255,0.2);
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+
+    text-align:center;
+
+    z-index:1000;
+}
+
+.dialogo button{
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#ffd700;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+.dialogo{
+    display:none;
+
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:500px;
+    max-width:80%;
+
+    background:rgba(15,23,42,0.95);
+
+    color:white;
+    padding:20px;
+
+    border-radius:15px;
+    border:2px solid rgba(255,255,255,0.2);
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+
+    animation: aparecer 0.4s ease;
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+}
+@keyframes brilhar{
+
+    from{
+
+        filter:
+        drop-shadow(0 0 5px gold);
+
+    }
+
+    to{
+
+        filter:
+        drop-shadow(0 0 18px gold);
+
+    }
+
+}
+</style>
+</head>
+<body>
+
+    <div class="missao">
+
+        <h1>Colégio</h1>
+        
+        <p>
+            Encontre os 6 pedaços da fotografia.
+        </p>
+        
+        <div id="contador" class="contador">
+            0 / 6
+        </div>
+        
+        <div class="foto" id="f1" data-img="images/img_cortada1.png"></div>
+        <div class="foto" id="f2" data-img="images/img_cortada2.png"></div>
+        <div class="foto" id="f3" data-img="images/img_cortada3.png"></div>
+        <div class="foto" id="f4" data-img="images/img-cortada4.png"></div>
+        <div class="foto" id="f5" data-img="images/img_cortada5.png"></div>
+        <div class="foto" id="f6" data-img="images/img_cortada6.png"></div>
+    </div> 
+    <div id="dialogo" class="dialogo">
+    <p id="textoDialogo"></p>
+    <button onclick="fecharDialogo()">Continuar</button>
+</div>
+    <div id="fotoEscola" class="fotoEscola">
+        <h2>Recompensa desbloqueada</h2>
+        <img src="images/foto_escola.jpg" alt="Foto da escola">
+        <div class="recompensa-texto">Você encontrou a foto completa do Colégio.</div>
+    </div>
+        <script>
+        let encontradas = 0;
+        
+        const fotos =
+        document.querySelectorAll(".foto");
+        
+        fotos.forEach(foto => {
+            const imgPath = foto.dataset.img;
+            if(imgPath){
+                foto.style.backgroundImage = `url('${imgPath}')`;
+            }
+            
+            foto.addEventListener("click", () => {
+                
+                foto.style.display = "none";
+
+        encontradas++;
+
+        document.getElementById(
+            "contador"
+        ).innerText =
+        `${encontradas}/6`;
+
+        if(encontradas === 6){
+
+            finalizar();
+
+        }
+
+    });
+
+});
+let intervaloTexto;
+
+function escreverTexto(frase){
+
+    clearInterval(intervaloTexto);
+
+    const texto =
+    document.getElementById("textoDialogo");
+
+    texto.innerHTML = "";
+
+    let i = 0;
+
+    intervaloTexto = setInterval(() => {
+
+        texto.innerHTML += frase.charAt(i);
+
+        i++;
+
+        if(i >= frase.length){
+
+            clearInterval(intervaloTexto);
+
+        }
+
+    }, 30);
+
+}
+
+function mostrarDialogo(texto){
+
+    document.getElementById(
+        "dialogo"
+    ).style.display = "block";
+
+    escreverTexto(texto);
+
+}
+
+function fecharDialogo(){
+
+    document.getElementById(
+        "dialogo"
+    ).style.display = "none";
+
+    window.location.href = "game.html";
+}
+
+function finalizar(){
+
+    const progresso =
+    JSON.parse(
+        localStorage.getItem("progresso")
+    ) || {};
+
+    progresso.colegio = true;
+
+    localStorage.setItem(
+        "progresso",
+        JSON.stringify(progresso)
+    );
+
+    mostrarDialogo( 
+    "Ao reunir todos os fragmentos da fotografia do Colégio, uma lembrança retorna à sua mente. O cansaço vence e você decide voltar para casa. Após uma noite de descanso, uma nova pista aponta para o Shopping..."
+);
+
+    document.getElementById("fotoEscola").style.display = "block";
+}
+    </script>
+</body>
+</html>

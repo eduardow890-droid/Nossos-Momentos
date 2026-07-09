@@ -9,42 +9,14 @@
 <title>Mapa Principal</title>
 
 <link rel="stylesheet" href="./style.css">
-<style>
-    .personagemDialogo img{
 
-    width:100px;
-
-    border-radius:50%;
-
-    border:3px solid #FFD700;
-
-}
-</style>
 </head>
 <body>
 
+    <!-- Canvas do jogo -->
     <canvas id="jogo"></canvas>
 
-<div id="dialogo">
-
-<div class="personagemDialogo">
-
-    <img src="images/namoraPIXEL.jpg" alt="Personagem">
-
-</div>
-
-    <h3 id="nomePersonagem">
-        Namorado
-    </h3>
-
-    <p id="textoDialogo"></p>
-
-    <button onclick="proximaFala()">
-        Próximo
-    </button>
-
-</div>
-
+    <!-- Painel de Informações -->
     <div id="hud">
 
         <h2>🌎 Cidade do Jogo</h2>
@@ -59,13 +31,13 @@
 
     </div>
 
-    <div id="historia"></div>
-
+    <!-- Tela ao aproximar de um prédio -->
     <div id="mensagem">
         Pressione <strong>E</strong> para entrar
     </div>
 
- <script src="mapa2.js"></script>
+    <!-- Arquivo JavaScript -->
+    <script src="mapa2.js"></script>
 
 </body>
 </html>

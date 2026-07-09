@@ -2,14 +2,14 @@ const canvas = document.getElementById("jogo");
 const ctx = canvas.getContext("2d");
 
 const sprite = new Image();
-sprite.src = "personagem.png";
+sprite.src = "images/personagem.png";
 
 const mapa = new Image();
 
 const jogador = {
 
-    x: 170,
-    y: 540,
+    x: 100,
+    y: 370,
 
     largura: 80,
     altura: 80,
@@ -24,6 +24,62 @@ const camera = {
 
 };
 
+let escalaMapa = 1;
+
+const falas = [
+
+"Amor... preciso te contar uma coisa.",
+
+"Eu estava organizando nosso álbum de fotografias hoje.",
+
+"Mas aconteceu algo estranho... todas as nossas fotos desapareceram.",
+
+"As fotos do Colégio onde nos conhecemos.",
+
+"As fotos dos finais de semana que passávamos no Shopping.",
+
+"As fotos do nosso primeiro encontro no Parque Realengo.",
+
+"E até aquelas dos momentos simples que vivíamos no Condomínio.",
+
+"Eu sei que parece impossível... mas sinto que essas lembranças ainda estão por aí.",
+
+"Talvez cada fotografia esteja escondida no lugar onde aquela memória aconteceu.",
+
+"Se conseguirmos visitar esses lugares novamente, talvez possamos recuperá-las.",
+
+"Por favor... me ajude a encontrar nossas memórias.",
+
+"A primeira pista aponta para o Colégio.",
+
+"Foi lá que tudo começou."
+
+];
+let falaAtual = 0;
+let dialogoAtivo = true;
+
+
+const mapaColisao = new Image();
+mapaColisao.src = "images/mapa_colisao.jpeg";
+
+const canvasColisao = document.createElement("canvas");
+const ctxColisao = canvasColisao.getContext("2d");
+
+mapaColisao.onload = () => {
+
+    canvasColisao.width = larguraMapa;
+    canvasColisao.height = alturaMapa;
+
+    ctxColisao.drawImage(
+        mapaColisao,
+        0,
+        0,
+        larguraMapa,
+        alturaMapa
+    );
+
+};
+
 mapa.onload = () => {
     console.log("MAPA CARREGADO");
 };
@@ -32,7 +88,7 @@ mapa.onerror = (e) => {
     console.log("ERRO", e);
 };
 
-mapa.src = "./mapa.jpeg";
+mapa.src = "images/mapa.jpeg";
 
 const larguraMapa = 1536;
 const alturaMapa = 1024;
@@ -52,6 +108,7 @@ const locais = [
 {
     nome: "Casa",
     arquivo: "casa.html",
+    desbloqueado: true,
 
     x: 50,
     y: 180,
@@ -63,6 +120,7 @@ const locais = [
 {
     nome: "Colegio",
     arquivo: "escola.html",
+    desbloqueado: true,
 
     x: 450,
     y: 80,
@@ -74,6 +132,7 @@ const locais = [
 {
     nome: "Shopping",
     arquivo: "shopping.html",
+    desbloqueado: false,
 
     x: 1180,
     y: 420,
@@ -85,6 +144,7 @@ const locais = [
 {
     nome: "Parque Realengo",
     arquivo: "parque.html",
+    desbloqueado: false,
 
     x: 410,
     y: 400,
@@ -96,7 +156,8 @@ const locais = [
 {
     nome: "Condominio",
     arquivo: "condominio.html",
-
+    desbloqueado: false,
+    
     x: 980,
     y: 760,
 
@@ -107,6 +168,7 @@ const locais = [
 {
     nome: "Colinas",
     arquivo: "colinas.html",
+    desbloqueado: false,
 
     x: 40,
     y: 720,
@@ -117,39 +179,255 @@ const locais = [
 
 ];
 
+const hitbox = {
+    x: 15,
+    y: 15,
+    largura: 50,
+    altura: 50
+};
+
+
+
+const progresso = {
+
+    colegio: false,
+    shopping: false,
+    parque: false,
+    condominio: false,
+    colinas: false
+
+};
+
+const salvo =
+JSON.parse(
+    localStorage.getItem("progresso")
+);
+
+if(salvo){
+
+    Object.assign(
+        progresso,
+        salvo
+    );
+
+}
+
+if(progresso.colegio){
+
+    locais.find(
+        l => l.nome === "Shopping"
+    ).desbloqueado = true;
+}
+
+if(progresso.shopping){
+
+    locais.find(
+        l => l.nome === "Parque Realengo"
+    ).desbloqueado = true;
+}
+
+if(progresso.parque){
+
+    locais.find(
+        l => l.nome === "Condominio"
+    ).desbloqueado = true;
+}
+
+if(progresso.condominio){
+
+    locais.find(
+        l => l.nome === "Colinas"
+    ).desbloqueado = true;
+}
+
+function mostrarDialogoInicial(){
+
+    const caixa =
+    document.getElementById("dialogo");
+
+    const texto =
+    document.getElementById("textoDialogo");
+
+    caixa.style.display = "block";
+
+    escreverTexto(falas[falaAtual]);
+}
+
+function proximaFala(){
+
+    falaAtual++;
+
+    if(falaAtual < falas.length){
+
+        escreverTexto(
+            falas[falaAtual]
+        );
+
+    }else{
+
+        dialogoAtivo = false;
+
+        document.getElementById(
+            "dialogo"
+        ).style.display = "none";
+
+    }
+
+}
+
+
 function atualizar(){
 
+    if(dialogoAtivo){
+    return;
+}
+
+    let novoX = jogador.x;
+    let novoY = jogador.y;
+
     if(teclas["ArrowRight"]){
-        jogador.x += jogador.velocidade;
+        novoX += jogador.velocidade;
     }
 
     if(teclas["ArrowLeft"]){
-        jogador.x -= jogador.velocidade;
+        novoX -= jogador.velocidade;
     }
 
     if(teclas["ArrowUp"]){
-        jogador.y -= jogador.velocidade;
+        novoY -= jogador.velocidade;
     }
 
     if(teclas["ArrowDown"]){
-        jogador.y += jogador.velocidade;
+        novoY += jogador.velocidade;
+    }
+
+    // Movimento horizontal
+    if(podeMover(novoX, jogador.y)){
+        jogador.x = novoX;
+    }
+
+    // Movimento vertical
+    if(podeMover(jogador.x, novoY)){
+        jogador.y = novoY;
     }
 
 }
 
-function atualizarCamera(){
+function podeAndar(x, y){
 
-    camera.x =
-        jogador.x - canvas.width / 2;
+    if(
+        canvasColisao.width === 0
+    ){
+        return true;
+    }
 
-    camera.y =
-        jogador.y - canvas.height / 2;
+    const pixel =
+    ctxColisao.getImageData(
+        Math.floor(x),
+        Math.floor(y),
+        1,
+        1
+    ).data;
+
+    return pixel[0] > 200;
+}
+
+function podeMover(x, y){
+
+    return (
+        podeAndar(x + 15, y + 15) &&
+        podeAndar(x + 65, y + 15) &&
+        podeAndar(x + 15, y + 65) &&
+        podeAndar(x + 65, y + 65)
+    );
 
 }
+function escreverTexto(frase){
+
+    const texto =
+    document.getElementById("textoDialogo");
+
+    texto.innerHTML = "";
+
+    let i = 0;
+
+    const intervalo = setInterval(() => {
+
+        texto.innerHTML += frase[i];
+
+        i++;
+
+        if(i >= frase.length){
+
+            clearInterval(intervalo);
+
+        }
+
+    },30);
+
+}
+
+
+function atualizarObjetivo(){
+
+    const historia =
+    document.getElementById("historia");
+
+    if(!historia) return;
+
+    if(!progresso.colegio){
+
+        historia.innerHTML =
+        "Vá ao Colégio procurar a primeira foto.";
+
+    }
+
+    else if(!progresso.shopping){
+
+        historia.innerHTML =
+        "Agora procure a memória do Shopping.";
+
+    }
+
+    else if(!progresso.parque){
+
+        historia.innerHTML =
+        "Encontre a foto do primeiro encontro no Parque Realengo.";
+
+    }
+
+    else if(!progresso.condominio){
+
+        historia.innerHTML =
+        "Procure lembranças no Condomínio.";
+
+    }
+
+    else if(!progresso.colinas){
+
+        historia.innerHTML =
+        "Uma pista leva você até as Colinas.";
+
+    }
+
+    else{
+
+        historia.innerHTML =
+        "Todas as memórias foram recuperadas.";
+
+    }
+
+}
+
+
 function redimensionar(){
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    escalaMapa = Math.max(
+        canvas.width / larguraMapa,
+        canvas.height / alturaMapa
+    );
 
 }
 
@@ -162,26 +440,27 @@ redimensionar();
 
 function mostrarMensagem(){
 
-    const caixa = document.getElementById("mensagem");
+    const caixa =
+    document.getElementById("mensagem");
 
     let pertoDeLocal = false;
 
     for(const local of locais){
 
         if(
-            jogador.x < local.x + local.largura &&
-            jogador.x + jogador.largura > local.x &&
-            jogador.y < local.y + local.altura &&
-            jogador.y + jogador.altura > local.y
+            perto(local) &&
+            local.desbloqueado
         ){
 
             pertoDeLocal = true;
             break;
         }
+
     }
 
     caixa.style.display =
-        pertoDeLocal ? "block" : "none";
+    pertoDeLocal ? "block" : "none";
+
 }
 
 function perto(local){
@@ -202,17 +481,20 @@ document.addEventListener("keydown", (e) => {
 
         for(const local of locais){
 
-            if(perto(local)){
+            if(
+                perto(local) &&
+                local.desbloqueado
+            ){
 
-                window.location.href = local.arquivo;
+                window.location.href =
+                local.arquivo;
+
                 break;
-
             }
 
         }
 
     }
-
 
 });
 
@@ -220,10 +502,10 @@ function desenharJogador(){
 
     ctx.drawImage(
         sprite,
-        jogador.x,
-        jogador.y,
-        jogador.largura,
-        jogador.altura
+        jogador.x * escalaMapa,
+        jogador.y * escalaMapa,
+        jogador.largura * escalaMapa,
+        jogador.altura * escalaMapa
     );
 
 }
@@ -231,19 +513,22 @@ function desenharJogador(){
 
 function atualizarCamera(){
 
+    const larguraVisivel = canvas.width / escalaMapa;
+    const alturaVisivel = canvas.height / escalaMapa;
+
     camera.x =
         jogador.x -
-        canvas.width / 2;
+        larguraVisivel / 2;
 
     camera.y =
         jogador.y -
-        canvas.height / 2;
+        alturaVisivel / 2;
 
     camera.x = Math.max(
         0,
         Math.min(
             camera.x,
-            larguraMapa - canvas.width
+            larguraMapa - larguraVisivel
         )
     );
 
@@ -251,7 +536,7 @@ function atualizarCamera(){
         0,
         Math.min(
             camera.y,
-            alturaMapa - canvas.height
+            alturaMapa - alturaVisivel
         )
     );
 
@@ -270,8 +555,8 @@ function desenhar(){
     ctx.save();
 
     ctx.translate(
-        -camera.x,
-        -camera.y
+        -camera.x * escalaMapa,
+        -camera.y * escalaMapa
     );
 
     desenharMapa();
@@ -290,8 +575,8 @@ function desenharMapa(){
         mapa,
         0,
         0,
-        larguraMapa,
-        alturaMapa
+        larguraMapa * escalaMapa,
+        alturaMapa * escalaMapa
     );
 
 }
@@ -299,11 +584,38 @@ function loop(){
 
     atualizar();
 
+    atualizarObjetivo();
+
     atualizarCamera();
 
     desenhar();
 
+    
     requestAnimationFrame(loop);
+    
+}
+const introVista =
+localStorage.getItem("introVista");
+
+if(introVista !== "true"){
+
+    mostrarDialogoInicial();
+
+    localStorage.setItem(
+        "introVista",
+        "true"
+    );
+
+}else{
+
+    dialogoAtivo = false;
+
+    const dialogo =
+    document.getElementById("dialogo");
+
+    if(dialogo){
+        dialogo.style.display = "none";
+    }
 
 }
 
