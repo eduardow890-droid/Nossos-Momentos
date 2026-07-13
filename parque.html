@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <style>
+body{
+    margin:0;
+    min-height:100vh;
+    background-image:url(images/fundoParque.jpg);
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+    overflow:hidden;
+    position:relative;
+
+}
+#danceArea{
+    border:3px solid red;
+}
+
+.progress-container{
+    width:400px;
+    height:24px;
+    background:#222;
+    border-radius:12px;
+    margin:20px auto;
+    overflow:hidden;
+}
+
+#progress{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00ff95,#00c8ff);
+    transition:0.2s;
+}
+
+#danceArea{
+    position:relative;
+    width:360px;
+    height:360px;
+
+    top:0;
+
+    margin:20px auto;
+    background:rgba(0,0,0,0.4);
+    border:3px solid white;
+}
+#personagem{
+    image-rendering:pixelated;
+    filter:drop-shadow(0 0 10px black);
+}
+
+.arrow{
+    position:absolute;
+    top:0;
+    font-size:45px;
+    animation:fall 2.5s linear forwards;
+    text-shadow:0 0 10px white;
+}
+
+.hit-line{
+
+position:absolute;
+
+bottom:30px;
+left:0;
+
+display:flex;
+justify-content:space-around;
+
+width:100%;
+
+font-size:40px;
+color:yellow;
+
+}
+
+@keyframes fall{
+
+from{
+    transform:translateY(-50px);
+}
+
+to{
+    transform:translateY(330px);
+}
+
+}
+html,body{
+    width:100%;
+    height:100%;
+}
+
+
+@keyframes dance{
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-20px) rotate(5deg);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+
+
+.dancing{
+    animation:dance 0.4s;
+}
+#reward{
+
+position:absolute;
+top:40%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:40px;
+display:none;
+background:black;
+padding:20px;
+border-radius:20px;
+
+}
+        </style>
+    </head>
+    <body>
+   <div class="progress-container">
+    <div id="progress"></div>
+</div>
+
+<img
+id="personagem"
+src="images/personagem.png"
+width="200">
+
+<div id="danceArea">
+
+    <div class="hit-line">
+        <div>⬅</div>
+        <div>⬇</div>
+        <div>⬆</div>
+        <div>➡</div>
+    </div>
+
+</div>
+<div id="reward"></div>
+        
+    <script>
+const danceArea =
+document.getElementById("danceArea");
+
+let progress = 0;
+
+function addScore(){
+
+    progress += 10;
+
+    if(progress > 100){
+        progress = 100;
+    }
+
+    document.getElementById("progress")
+    .style.width = progress + "%";
+
+    if(progress >= 100){
+        showReward();
+    }
+}
+
+
+const arrows = [
+"ArrowLeft",
+"ArrowDown",
+"ArrowUp",
+"ArrowRight"
+];
+
+function showReward(){
+
+let r=document.getElementById("reward");
+
+r.innerHTML="🎉 Nova dança desbloqueada!";
+
+r.style.display="block";
+
+
+setTimeout(()=>{
+
+r.style.display="none";
+
+},3000);
+
+}
+
+setInterval(() => {
+
+    const direction =
+    arrows[Math.floor(
+    Math.random()*arrows.length)];
+
+    createArrow(direction);
+
+},1000);
+function createArrow(direction){
+
+    const arrow =
+    document.createElement("div");
+
+    arrow.className = "arrow";
+
+    arrow.dataset.key =
+    direction;
+
+    arrow.textContent = {
+
+        ArrowLeft:"⬅",
+        ArrowDown:"⬇",
+        ArrowUp:"⬆",
+        ArrowRight:"➡"
+
+    }[direction];
+
+ arrow.style.left =
+Math.floor(Math.random()*300)+"px";
+
+    danceArea.appendChild(arrow);
+
+    setTimeout(()=>{
+
+        if(arrow.parentNode){
+
+            arrow.style.display="none";
+
+setTimeout(()=>{
+
+arrow.remove();
+
+},100);
+
+        }
+
+    },3000);
+
+}
+document.addEventListener(
+"keydown",
+e => {
+
+    const arrowsOnScreen =
+    document.querySelectorAll(".arrow");
+
+    arrowsOnScreen.forEach(arrow=>{
+
+let area =
+danceArea.getBoundingClientRect();
+
+let arrowPos =
+arrow.getBoundingClientRect();
+
+
+let y =
+arrowPos.top - area.top;
+
+
+if(
+arrow.dataset.key === e.code &&
+y > 250 &&
+y < 360
+){
+
+            arrow.style.display="none";
+
+setTimeout(()=>{
+
+arrow.remove();
+
+},100);
+
+            addScore();
+
+            danceCharacter();
+
+        }
+
+    });
+
+});
+
+function danceCharacter(){
+
+    const img = document.getElementById("personagem");
+
+    console.log(img);
+
+    img.src =
+    "images/danca" +
+    Math.ceil(Math.random()*3)
+    + ".png";
+
+    img.classList.add("dancing");
+
+    setTimeout(()=>{
+
+        img.classList.remove("dancing");
+
+        img.src = "images/personagem.png";
+
+    },400);
+
+}
+
+</script>
+</body>
+</html>

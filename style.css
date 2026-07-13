@@ -244,3 +244,43 @@ body{
     margin-bottom:10px;
 
 }
+#mobileControls{
+    display:none;
+}
+
+@media (max-width:768px){
+
+    #mobileControls{
+
+        display:block;
+
+        position:fixed;
+
+        bottom:20px;
+        left:50%;
+
+        transform:translateX(-50%);
+
+        z-index:9999;
+
+        text-align:center;
+    }
+
+    #mobileControls button{
+
+        width:70px;
+        height:70px;
+
+        margin:5px;
+
+        font-size:28px;
+
+        border:none;
+
+        border-radius:15px;
+
+        background:#333;
+        color:white;
+    }
+
+}
