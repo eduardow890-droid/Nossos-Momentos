@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Shopping</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:#081122;color:#f4f8ff;display:flex;align-items:center;justify-content:center;padding:20px;}
+.page{width:100%;max-width:1040px;}
+.header{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;}
+.header h1{margin:0;font-size:2rem;color:#ffd45b;text-transform:uppercase;letter-spacing:1px;}
+.header p{margin:0;max-width:720px;line-height:1.7;color:#dce6ff;}
+.maze-wrap{position:relative;background:linear-gradient(180deg,#16203b 0%,#0a1222 100%);border:1px solid rgba(255,255,255,0.12);border-radius:24px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,0.45);padding:20px;}
+.maze{display:grid;gap:4px;touch-action:none;min-height:72vh;width:100%;grid-auto-rows:1fr;}
+.cell{width:100%;aspect-ratio:1/1;border-radius:8px;transition:background 0.2s ease, transform 0.2s ease;}
+.cell.small{border-radius:6px;}
+.cell.wall{background:#0b1834;box-shadow:inset 0 0 8px rgba(0,0,0,0.45);}
+.cell.floor{background:rgba(233,245,255,0.18);backdrop-filter:blur(4px);box-shadow:inset 0 0 8px rgba(255,255,255,0.05);}
+.cell.goal{position:relative;background:linear-gradient(135deg,#ffb74d,#ffea5e);box-shadow:0 0 18px rgba(255,183,77,0.45);border:2px solid rgba(255,255,255,0.28);}
+.cell.goal::after{content:'';position:absolute;inset:18% 18%;background:url('images/namoradoSTY.jpg') center/contain no-repeat;border-radius:12px;pointer-events:none;}
+.player{position:absolute;top:0;left:0;width:calc((100% - 4px * 16) / 17 - 8px);height:calc((100% - 4px * 16) / 17 - 8px);border-radius:18px;background:url('images/personagem.png') center/cover no-repeat;box-shadow:0 0 28px rgba(255,215,115,0.75), inset 0 0 12px rgba(255,255,255,0.6);border:2px solid rgba(255,255,255,0.8);transition:left 0.1s ease, top 0.1s ease;z-index:2;}
+.info-box{margin-top:18px;padding:18px;background:rgba(7,12,24,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:18px;}
+.info-box h2{margin:0 0 10px;color:#7ce0ff;font-size:1.1rem;}
+.info-box p{margin:0;color:#dce6ff;line-height:1.7;}
+.dialog{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,16,0.88);backdrop-filter:blur(4px);z-index:10;}
+.dialog.visible{display:flex;}
+.dialog-card{width:100%;max-width:520px;background:rgba(8,16,38,0.98);border:1px solid rgba(255,255,255,0.12);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.55);overflow:hidden;}
+.dialog-card img{width:100%;max-height:240px;display:block;object-fit:cover;}
+.dialog-card .content{padding:18px 22px 22px;}
+.dialog-card h2{margin:0 0 12px;font-size:1.6rem;color:#ffd45b;}
+.dialog-card p{margin:0 0 16px;line-height:1.7;color:#e8f0ff;}
+.dialog-card button{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;background:#60c4ff;color:#08112b;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 10px 25px rgba(96,196,255,0.24);}
+.instructions{margin-top:16px;padding:16px;background:rgba(12,20,40,0.95);border:1px dashed rgba(255,255,255,0.14);border-radius:18px;color:#dfe8ff;}
+.instructions strong{color:#ffd45b;}
+@media(max-width:860px){.cell{width:calc((100% - 4px * 16) / 17);}.page{padding:0;}.header{flex-direction:column;}.dialog-card{max-width:100%;}}
+@media(max-width:580px){.cell{width:calc((100% - 4px * 16) / 17);aspect-ratio:1/1;}}
+</style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div>
+            <h1>Shopping: encontro no labirinto</h1>
+            <p>Ajude a namorada a encontrar o namorado no shopping. Quando ela chegar até ele, ele pedirá ajuda para buscar algo no McDonald's e seguir adiante na história.</p>
+        </div>
+    </div>
+    <div class="maze-wrap">
+        <div id="maze" class="maze"></div>
+        <div id="player" class="player"></div>
+    </div>
+    <div class="info-box">
+        <h2>Como jogar</h2>
+        <p>Use as <strong>setas do teclado</strong> para mover a personagem pelo labirinto. Evite paredes e chegue até o namorado marcado com amarelo. Quando encontrar o ponto de encontro, ele pedirá que você vá até o McDonald's.</p>
+    </div>
+    <div class="instructions">
+        <p><strong>Dica:</strong> o objetivo é alcançar o ponto amarelo no canto inferior direito. O namorado está à espera e precisará de ajuda para continuar a história.</p>
+    </div>
+</div>
+<div id="dialog" class="dialog" role="dialog" aria-modal="true">
+    <div class="dialog-card">
+        <img id="dialogImg" src="images/namoradoSTY.jpg" alt="Namorado">
+        <div class="content" id="dialogContent">
+            <h2 id="dialogTitle">Ele está esperando por você!</h2>
+            <p id="dialogText">“Eu lembro onde está a foto... mas estou com muita fome. Pode ir até o McDonald's e pegar algo para mim?”</p>
+            <div id="dialogActions" style="display:flex;gap:10px;margin-top:14px;">
+                <a href="mcdonalds.html"><button>Ir ao McDonald's</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const mazeData = [
+    '#################',
+    '#P....#.......#.#',
+    '#.###.#.#####.#.#',
+    '#...#.#.....#...#',
+    '###.#.###.#.#####',
+    '#...#...#.#.....#',
+    '#.#####.#.###.#.#',
+    '#.#.....#...#.#.#',
+    '#.#.#######.#.#.#',
+    '#.#.......#.#.#.#',
+    '#.#######.#.#.#.#',
+    '#.......#.#.#.#.#',
+    '#####.#.#.#.#.#.#',
+    '#.....#.#...#...#',
+    '#.#####.#####.B.#',
+    '#################'
+];
+const maze = document.getElementById('maze');
+const playerEl = document.getElementById('player');
+const dialog = document.getElementById('dialog');
+const rows = mazeData.length;
+const cols = mazeData[0].length;
+const cellSize = 100 / cols;
+let playerPos = { x: 1, y: 1 };
+
+maze.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+maze.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+
+function renderMaze(){
+    maze.innerHTML = '';
+    for(let y = 0; y < rows; y++){
+        for(let x = 0; x < cols; x++){
+            const char = mazeData[y][x];
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            if(char === '#') cell.classList.add('wall');
+            else if(char === 'B') cell.classList.add('goal');
+            else cell.classList.add('floor');
+            maze.appendChild(cell);
+        }
+    }
+    updatePlayerPosition();
+}
+
+function updatePlayerPosition(){
+    const width = maze.clientWidth / cols;
+    const height = maze.clientHeight / rows;
+    playerEl.style.width = `${width - 8}px`;
+    playerEl.style.height = `${height - 8}px`;
+    playerEl.style.left = `${playerPos.x * (width + 4)}px`;
+    playerEl.style.top = `${playerPos.y * (height + 4)}px`;
+}
+
+function canMove(x, y){
+    if(x < 0 || x >= cols || y < 0 || y >= rows) return false;
+    return mazeData[y][x] !== '#';
+}
+
+function checkGoal(x, y){
+    return mazeData[y][x] === 'B';
+}
+
+function movePlayer(dx, dy){
+    const nextX = playerPos.x + dx;
+    const nextY = playerPos.y + dy;
+    if(canMove(nextX, nextY)){
+        playerPos = { x: nextX, y: nextY };
+        updatePlayerPosition();
+        if(checkGoal(nextX, nextY)){
+            showDialog();
+        }
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    switch(event.code){
+        case 'ArrowUp':
+            movePlayer(0, -1);
+            event.preventDefault();
+            break;
+        case 'ArrowDown':
+            movePlayer(0, 1);
+            event.preventDefault();
+            break;
+        case 'ArrowLeft':
+            movePlayer(-1, 0);
+            event.preventDefault();
+            break;
+        case 'ArrowRight':
+            movePlayer(1, 0);
+            event.preventDefault();
+            break;
+    }
+});
+
+function showDialog(){
+    const progresso = JSON.parse(localStorage.getItem('progresso')) || {};
+    const hasMCD = progresso.mcd === true;
+    const dialogImg = document.getElementById('dialogImg');
+    const dialogTitle = document.getElementById('dialogTitle');
+    const dialogText = document.getElementById('dialogText');
+    const dialogActions = document.getElementById('dialogActions');
+
+    if(hasMCD){
+        progresso.shopping = true;
+        localStorage.setItem('progresso', JSON.stringify(progresso));
+        dialogImg.src = 'images/foto_escola.jpg';
+        dialogTitle.textContent = 'Memória recuperada';
+        dialogText.textContent = 'Ele sorri e mostra a foto que encontrou. Uma lembrança a mais foi recuperada.';
+        dialogActions.innerHTML = '<button onclick="voltarMapa()">Voltar para o mapa</button>';
+        document.getElementById('dialog').classList.add('visible');
+    } else {
+        dialogImg.src = 'images/namoradoSTY.jpg';
+        dialogTitle.textContent = 'Ele precisa comer';
+        dialogText.textContent = '“Eu lembro onde está a foto... mas estou com muita fome. Pode ir até o McDonald\'s e pegar algo para mim?”';
+        dialogActions.innerHTML = '<a href="mcdonalds.html"><button>Ir ao McDonald\'s</button></a>';
+        document.getElementById('dialog').classList.add('visible');
+    }
+}
+
+function voltarMapa(){
+    window.location.href = 'index.html';
+}
+
+window.addEventListener('resize', updatePlayerPosition);
+renderMaze();
+document.body.tabIndex = 0;
+document.body.focus();
+</script>
+</body>
+</html>

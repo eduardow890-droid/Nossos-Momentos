@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url("images/backMAC.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .press {
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  .press h1 {
+    margin: 0 0 10px;
+    font-size: 32px;
+  }
+
+  .press p {
+    margin: 0 0 20px;
+    font-size: 18px;
+  }
+
+  .cardapio {
+    width: min(90vw, 760px);
+    background: rgba(255,255,255,0.97);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+
+  .cardapio h2 {
+    color: #111;
+    margin: 0 0 16px;
+    text-align: center;
+  }
+
+  .menu-section {
+    display: block;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .produto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+
+  .produto span:first-child {
+    color: #111;
+    font-weight: 600;
+    flex: 1;
+  }
+
+  .controle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #333;
+  }
+
+  .btn-secundario {
+    background: #d62828;
+    margin-top: 10px;
+  }
+
+  .btn-secundario:hover {
+    background: #a61f1f;
+  }
+
+  .btn-voltar {
+    background: #555;
+    margin-top: 10px;
+  }
+
+  .btn-voltar:hover {
+    background: #333;
+  }
+
+  .resumo {
+    padding: 12px;
+    background: #f2f2f2;
+    border-radius: 10px;
+    color: #111;
+  }
+
+  .resumo strong {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .dialogo-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 20px;
+  }
+
+  .dialogo-caixa {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    width: min(90vw, 420px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  .fala {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .fala strong {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .atendente {
+    background: #e8f3ff;
+    border-left: 5px solid #2f80ed;
+  }
+
+  .personagem {
+    background: #fff4c2;
+    border-left: 5px solid #f2b705;
+  }
+</style>
+</head>
+<body>
+  <div class="press" id="inicio">
+    <h1>McDonald's</h1>
+    <p>Monte seu pedido com facilidade.</p>
+    <button onclick="abrirCardapio()">Clique para abrir o cardápio</button>
+  </div>
+
+  <div class="cardapio hidden" id="cardapio">
+    <h2>Cardápio</h2>
+
+    <div class="menu-section" id="selecaoPrincipal">
+      <div class="produto">
+        <span>Big Mac - R$ 29,90</span>
+        <div class="controle">
+          <button onclick="diminuir('bigmac')">-</button>
+          <span id="bigmac">0</span>
+          <button onclick="aumentar('bigmac')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Chicken Jr - R$ 18,90</span>
+        <div class="controle">
+          <button onclick="diminuir('chikenjr')">-</button>
+          <span id="chikenjr">0</span>
+          <button onclick="aumentar('chikenjr')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Mac Cheese - R$ 30,90</span>
+        <div class="controle">
+          <button onclick="diminuir('maccheese')">-</button>
+          <span id="maccheese">0</span>
+          <button onclick="aumentar('maccheese')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Triplo Burger - R$ 34,90</span>
+        <div class="controle">
+          <button onclick="diminuir('triploburguer')">-</button>
+          <span id="triploburguer">0</span>
+          <button onclick="aumentar('triploburguer')">+</button>
+        </div>
+      </div>
+
+      <button class="btn-secundario" onclick="abrirRefri()">Escolher Refrigerante</button>
+    </div>
+
+    <div class="menu-section hidden" id="cardapioRefri">
+      <div class="produto">
+        <span>Fanta Laranja - R$ 5,90</span>
+        <div class="controle">
+          <button onclick="diminuir('fantalaranja')">-</button>
+          <span id="fantalaranja">0</span>
+          <button onclick="aumentar('fantalaranja')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Cola Cola - R$ 5,90</span>
+        <div class="controle">
+          <button onclick="diminuir('colacola')">-</button>
+          <span id="colacola">0</span>
+          <button onclick="aumentar('colacola')">+</button>
+        </div>
+      </div>
+
+      <button class="btn-secundario" onclick="abrirAcompanhamento()">Escolher Acompanhamento</button>
+      <button class="btn-voltar" onclick="voltarEtapa()">Voltar</button>
+    </div>
+
+    <div class="menu-section hidden" id="cardapioAcompanhamento">
+      <div class="produto">
+        <span>Batata Frita P - R$ 8,90</span>
+        <div class="controle">
+          <button onclick="diminuir('batatafritap')">-</button>
+          <span id="batatafritap">0</span>
+          <button onclick="aumentar('batatafritap')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Batata Frita M - R$ 10,90</span>
+        <div class="controle">
+          <button onclick="diminuir('batatafritam')">-</button>
+          <span id="batatafritam">0</span>
+          <button onclick="aumentar('batatafritam')">+</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <span>Batata Frita G - R$ 12,90</span>
+        <div class="controle">
+          <button onclick="diminuir('batatafritag')">-</button>
+          <span id="batatafritag">0</span>
+          <button onclick="aumentar('batatafritag')">+</button>
+        </div>
+      </div>
+
+      <button class="btn-secundario" onclick="abrirResumo()">Ver Resumo</button>
+      <button class="btn-voltar" onclick="voltarEtapa()">Voltar</button>
+    </div>
+
+    <div class="menu-section hidden" id="resumo">
+      <div class="resumo" id="listaResumo"></div>
+      <button class="btn-voltar" onclick="voltarEtapa()">Voltar</button>
+      <button class="btn-secundario" onclick="finalizarPedido()">Confirmar Pedido</button>
+    </div>
+  </div>
+
+  <div class="dialogo-overlay hidden" id="dialogoPedido">
+    <div class="dialogo-caixa">
+      <div class="fala atendente hidden">
+        <strong>Atendente:</strong>
+        <p id="textoDialogo">Pedido pronto! Pode buscar na bancada.</p>
+      </div>
+      <div class="fala personagem hidden" id="falaPersonagem">
+        <strong>Pensamento:</strong>
+        <p id="textoPersonagem">Preciso voltar e entregar o lanche ao meu namorado.</p>
+      </div>
+      <button onclick="fecharDialogoPedido()">Fechar</button>
+    </div>
+  </div>
+
+<script>
+const produtos = {
+  bigmac: 0,
+  chikenjr: 0,
+  maccheese: 0,
+  triploburguer: 0,
+  fantalaranja: 0,
+  colacola: 0,
+  batatafritap: 0,
+  batatafritam: 0,
+  batatafritag: 0
+};
+
+const precos = {
+  bigmac: 29.90,
+  chikenjr: 18.90,
+  maccheese: 30.90,
+  triploburguer: 34.90,
+  fantalaranja: 5.90,
+  colacola: 5.90,
+  batatafritap: 8.90,
+  batatafritam: 10.90,
+  batatafritag: 12.90
+};
+
+const nomes = {
+  bigmac: 'Big Mac',
+  chikenjr: 'Chicken Jr',
+  maccheese: 'Mac Cheese',
+  triploburguer: 'Triplo Burger',
+  fantalaranja: 'Fanta Laranja',
+  colacola: 'Cola Cola',
+  batatafritap: 'Batata Frita P',
+  batatafritam: 'Batata Frita M',
+  batatafritag: 'Batata Frita G'
+};
+
+const ordemEtapas = ['selecaoPrincipal', 'cardapioRefri', 'cardapioAcompanhamento', 'resumo'];
+let etapaAtual = 'inicio';
+
+function getElemento(id) {
+  return document.getElementById(id);
+}
+
+function setVisivel(elemento, visivel, displayValue = 'block') {
+  if (!elemento) return;
+  elemento.classList.toggle('hidden', !visivel);
+  elemento.style.display = visivel ? displayValue : 'none';
+}
+
+function atualizarQuantidade(produto) {
+  const elemento = getElemento(produto);
+  if (elemento) {
+    elemento.textContent = produtos[produto];
+  }
+}
+
+function resetarControles() {
+  Object.keys(produtos).forEach((produto) => {
+    produtos[produto] = 0;
+    atualizarQuantidade(produto);
+  });
+}
+
+function mostrarSecao(secaoId) {
+  const secoes = document.querySelectorAll('.menu-section');
+
+  secoes.forEach((secao) => {
+    setVisivel(secao, false, 'block');
+  });
+
+  const secaoAtual = getElemento(secaoId);
+  if (secaoAtual) {
+    setVisivel(secaoAtual, true, 'block');
+  }
+
+  etapaAtual = secaoId;
+}
+
+function mostrarTela(telaId) {
+  const inicio = getElemento('inicio');
+  const cardapio = getElemento('cardapio');
+  const dialogo = getElemento('dialogoPedido');
+
+  setVisivel(inicio, false, 'block');
+  setVisivel(cardapio, false, 'block');
+  setVisivel(dialogo, false, 'flex');
+
+  if (telaId === 'inicio') {
+    setVisivel(inicio, true, 'block');
+    etapaAtual = 'inicio';
+    return;
+  }
+
+  if (telaId === 'cardapio') {
+    setVisivel(cardapio, true, 'block');
+    mostrarSecao('selecaoPrincipal');
+    return;
+  }
+
+  setVisivel(cardapio, true, 'block');
+  mostrarSecao(telaId);
+}
+
+function voltarEtapa() {
+  if (etapaAtual === 'inicio') {
+    mostrarTela('inicio');
+    return;
+  }
+
+  const indiceAtual = ordemEtapas.indexOf(etapaAtual);
+  const indiceAnterior = indiceAtual > 0 ? indiceAtual - 1 : 0;
+  mostrarSecao(ordemEtapas[indiceAnterior]);
+}
+
+function abrirCardapio() {
+  mostrarTela('cardapio');
+}
+
+function abrirRefri() {
+  const temLanche = Object.values(produtos).slice(0, 4).some((quantidade) => quantidade > 0);
+  if (!temLanche) {
+    alert('Selecione pelo menos um lanche antes de continuar.');
+    return;
+  }
+
+  mostrarSecao('cardapioRefri');
+}
+
+function abrirAcompanhamento() {
+  const temRefrigerante = Object.values(produtos).slice(4, 6).some((quantidade) => quantidade > 0);
+  const temLanche = Object.values(produtos).slice(0, 4).some((quantidade) => quantidade > 0);
+
+  if (!temLanche) {
+    alert('Selecione pelo menos um lanche antes de continuar.');
+    return;
+  }
+
+  if (!temRefrigerante) {
+    alert('Selecione pelo menos um refrigerante antes de continuar.');
+    return;
+  }
+
+  mostrarSecao('cardapioAcompanhamento');
+}
+
+function abrirResumo() {
+  const temPedido = Object.values(produtos).some((quantidade) => quantidade > 0);
+  if (!temPedido) {
+    alert('Selecione pelo menos um item para montar o pedido.');
+    return;
+  }
+
+  montarResumo();
+  mostrarSecao('resumo');
+}
+
+function finalizarPedido() {
+  const temPedido = Object.values(produtos).some((quantidade) => quantidade > 0);
+  if (!temPedido) {
+    alert('Seu pedido está vazio. Selecione pelo menos um item antes de confirmar.');
+    return;
+  }
+
+  montarResumo();
+  mostrarSecao('resumo');
+  mostrarDialogoPedidoPronto();
+}
+
+function mostrarDialogoPedidoPronto() {
+  const dialogo = getElemento('dialogoPedido');
+  const falaPersonagem = getElemento('falaPersonagem');
+  const atendente = document.querySelector('.fala.atendente');
+  const textoDialogo = getElemento('textoDialogo');
+  const textoPersonagem = getElemento('textoPersonagem');
+
+  if (!dialogo || !falaPersonagem || !atendente || !textoDialogo || !textoPersonagem) {
+    return;
+  }
+
+  setVisivel(dialogo, true, 'flex');
+  setVisivel(falaPersonagem, false, 'block');
+  setVisivel(atendente, false, 'block');
+  textoDialogo.textContent = 'Pedido pronto! Pode buscar na bancada.';
+  textoPersonagem.textContent = 'Preciso voltar e entregar o lanche ao meu namorado.';
+
+  setTimeout(() => {
+    setVisivel(atendente, true, 'block');
+  }, 800);
+
+  setTimeout(() => {
+    setVisivel(falaPersonagem, true, 'block');
+  }, 1600);
+}
+
+function fecharDialogoPedido() {
+  const dialogo = getElemento('dialogoPedido');
+  if (dialogo) {
+    setVisivel(dialogo, false, 'flex');
+  }
+
+  window.location.href = 'shopping.html';
+}
+
+function resetarPedido() {
+  resetarControles();
+  const listaResumo = getElemento('listaResumo');
+  if (listaResumo) {
+    listaResumo.innerHTML = '<strong>Seu pedido está vazio.</strong><p>Escolha algum item para continuar.</p>';
+  }
+  mostrarTela('inicio');
+}
+
+function aumentar(produto) {
+  if (!produtos[produto] && produtos[produto] !== 0) {
+    return;
+  }
+
+  produtos[produto]++;
+  atualizarQuantidade(produto);
+}
+
+function diminuir(produto) {
+  if (!produtos[produto] && produtos[produto] !== 0) {
+    return;
+  }
+
+  if (produtos[produto] > 0) {
+    produtos[produto]--;
+    atualizarQuantidade(produto);
+  }
+}
+
+function montarResumo() {
+  const listaResumo = getElemento('listaResumo');
+  if (!listaResumo) {
+    return;
+  }
+
+  const itens = Object.entries(produtos).filter(([, quantidade]) => quantidade > 0);
+
+  if (itens.length === 0) {
+    listaResumo.innerHTML = '<strong>Seu pedido está vazio.</strong><p>Escolha algum item para continuar.</p>';
+    return;
+  }
+
+  const total = itens.reduce((soma, [produto, quantidade]) => soma + quantidade * precos[produto], 0);
+  const html = [
+    '<strong>Resumo do pedido</strong>',
+    ...itens.map(([produto, quantidade]) => `<div>${quantidade}x ${nomes[produto]} - R$ ${(precos[produto] * quantidade).toFixed(2).replace('.', ',')}</div>`),
+    `<strong>Total: R$ ${total.toFixed(2).replace('.', ',')}</strong>`
+  ];
+
+  listaResumo.innerHTML = html.join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  resetarPedido();
+});
+</script>
+</body>
+</html>
