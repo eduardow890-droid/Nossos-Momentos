@@ -18,56 +18,10 @@ body{
     align-items:center;
     padding:clamp(8px,1vw,20px);
 }
-@media (max-width:768px){
 
-    body{
-        overflow-y:auto;
-    }
 
-}
 
-@media(max-width:768px){
 
-    .maze{
-        height:min(70vh, 500px);
-        width:auto;
-    }
-
-}
-@media(max-width:768px){
-
-    .header,
-    .info-box,
-    .instructions{
-        display:none;
-    }
-
-    body{
-        overflow:hidden;
-        padding:0;
-    }
-
-    .page{
-        width:100vw;
-        height:100vh;
-        min-height:0;
-        max-height:none;
-    }
-
-    .maze-wrap{
-        width:100%;
-        height:calc(100vh - 110px);
-        padding:5px;
-    }
-
-    .maze{
-        width:auto;
-        height:100%;
-
-        aspect-ratio:17/16;
-    }
-
-}
 body{
 
     -webkit-user-select:none;
@@ -86,18 +40,15 @@ body{
     touch-action:manipulation;
 }
 
-
 .page{
     width:100%;
     max-width:1100px;
     min-height:100vh;
-    max-height:100vh;
-
     display:flex;
     flex-direction:column;
-
     gap:10px;
 }
+
 
 .header{
 display:flex;
@@ -178,7 +129,7 @@ transition:.2s;
 
 width:min(520px,95vw);
 
-max-height:95vh;
+max-height:85vh;
 
 overflow:auto;
 
@@ -191,6 +142,7 @@ border-radius:24px;
 box-shadow:0 24px 60px rgba(0,0,0,.55);
 
 }
+
 
 .dialog-card img{
 
@@ -273,23 +225,78 @@ width:96vw;
 
 
 
-#mobileControls{
-    display:none;
+
+
+@media (max-width:768px){
+
+    .header,
+    .info-box,
+    .instructions{
+        display:none;
+    }
+
+    body{
+        margin:0;
+        padding:0;
+        overflow:hidden;
+    }
+
+    .page{
+        width:100vw;
+        height:100dvh;
+    }
+
+    .maze-wrap{
+        flex:1;
+        width:100%;
+        padding:5px;
+        border-radius:0;
+    }
+
+    .maze{
+        width:100%;
+        max-height:70vh;
+        height:auto;
+        aspect-ratio:17/16;
+    }
+
+    #mobileControls{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:8px;
+        left:20px;
+        position:fixed;
+        bottom:20px;
+        z-index:9999;
+    }
+
+    #mobileControls button{
+        width:70px;
+        height:70px;
+        font-size:28px;
+    }
 }
 
 @media (hover:none){
 
     #mobileControls{
-        display:block;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:8px;
+        left:20px;
         position:fixed;
         bottom:20px;
-        left:20px;
+      
+
         z-index:9999;
     }
 
     #mobileControls button{
-        width:60px;
-        height:60px;
+        width:70px;
+        height:70px;
+        font-size:28px;
     }
 
 }
@@ -340,24 +347,43 @@ width:96vw;
 
 </div>
 <script>
-const mazeData = [
-    '#################',
-    '#P....#.......#.#',
-    '#.###.#.#####.#.#',
-    '#...#.#.....#...#',
-    '###.#.###.#.#####',
-    '#...#...#.#.....#',
-    '#.#####.#.###.#.#',
-    '#.#.....#...#.#.#',
-    '#.#.#######.#.#.#',
-    '#.#.......#.#.#.#',
-    '#.#######.#.#.#.#',
-    '#.......#.#.#.#.#',
-    '#####.#.#.#.#.#.#',
-    '#.....#.#...#...#',
-    '#.#####.#####.B.#',
-    '#################'
+const mazeDataDesktop = [
+'#################',
+'#P....#.......#.#',
+'#.###.#.#####.#.#',
+'#...#.#.....#...#',
+'###.#.###.#.#####',
+'#...#...#.#.....#',
+'#.#####.#.###.#.#',
+'#.#.....#...#.#.#',
+'#.#.#######.#.#.#',
+'#.#.......#.#.#.#',
+'#.#######.#.#.#.#',
+'#.......#.#.#.#.#',
+'#####.#.#.#.#.#.#',
+'#.....#.#...#...#',
+'#.#####.#####.B.#',
+'#################'
 ];
+
+const mazeDataMobile = [
+'###########',
+'#P....#...#',
+'###.#.#.#.#',
+'#...#.#...#',
+'#.#.#.###.#',
+'#.#.....#.#',
+'#.#####.#.#',
+'#.....#...#',
+'#.###.##B.#',
+'###########'
+];
+
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+const mazeData = isMobile
+    ? mazeDataMobile
+    : mazeDataDesktop;
 const maze = document.getElementById('maze');
 const playerEl = document.getElementById('player');
 const dialog = document.getElementById('dialog');
@@ -461,7 +487,7 @@ function showDialog(){
     if(hasMCD){
         progresso.shopping = true;
         localStorage.setItem('progresso', JSON.stringify(progresso));
-        dialogImg.src = 'images/foto_escola.jpg';
+        dialogImg.src = 'images/fotoshopping.jpeg';
         dialogTitle.textContent = 'Memória recuperada';
         dialogText.textContent = 'Ele sorri e mostra a foto que encontrou. Uma lembrança a mais foi recuperada.';
         dialogActions.innerHTML = '<button onclick="voltarMapa()">Voltar para o mapa</button>';

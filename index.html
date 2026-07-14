@@ -24,6 +24,30 @@
 <body>
 
     <canvas id="jogo"></canvas>
+    <div id="intro">
+
+    <div id="introContent">
+
+        <h1>💜 Nossos Momentos</h1>
+<p>
+    🎮 Controles:
+</p>
+
+<p>
+    ⬅ ⬆ ⬇ ➡ Movimentar personagem
+</p>
+
+<p>
+     Tecla <strong>E</strong> para interagir com os locais
+</p>
+        <button id="btnIniciar">
+            ✨ Iniciar Jornada
+        </button>
+
+    </div>
+
+</div>
+
 
 <div id="dialogo">
 
@@ -44,21 +68,6 @@
     </button>
 
 </div>
-
-    <div id="hud">
-
-        <h2>🌎 Cidade do Jogo</h2>
-
-        <p>
-            Ande com as setas do teclado.
-        </p>
-
-        <p>
-            Pressione <strong>E</strong> para entrar em um local.
-        </p>
-
-    </div>
-
     <div id="historia"></div>
 
     <div id="mensagem">
@@ -85,6 +94,30 @@
 </div>
  <script src="mapa2.js"></script>
  <script src="mobil.js"></script>
+ <script>
+const introJaVista =
+localStorage.getItem("introVista");
+
+if(introJaVista === "true"){
+
+    document.getElementById("intro")
+    .style.display = "none";
+
+}
+document
+.getElementById("btnIniciar")
+.addEventListener("click", () => {
+
+    localStorage.setItem(
+        "introVista",
+        "true"
+    );
+
+    document.getElementById("intro")
+    .style.display = "none";
+
+});
+ </script>
 </div>
 
 </body>
