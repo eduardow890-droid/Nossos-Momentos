@@ -8,7 +8,7 @@
 *{box-sizing:border-box;}
 body{
     margin:0;
-    height:100vh;
+    min-height:100vh;
     overflow:hidden;
     font-family:Arial,Helvetica,sans-serif;
     background:#081122;
@@ -18,10 +18,62 @@ body{
     align-items:center;
     padding:clamp(8px,1vw,20px);
 }
+@media (max-width:768px){
+
+    body{
+        overflow-y:auto;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .maze{
+        height:min(70vh, 500px);
+        width:auto;
+    }
+
+}
+@media(max-width:768px){
+
+    .header,
+    .info-box,
+    .instructions{
+        display:none;
+    }
+
+    body{
+        overflow:hidden;
+        padding:0;
+    }
+
+    .page{
+        width:100vw;
+        height:100vh;
+        min-height:0;
+        max-height:none;
+    }
+
+    .maze-wrap{
+        width:100%;
+        height:calc(100vh - 110px);
+        padding:5px;
+    }
+
+    .maze{
+        width:auto;
+        height:100%;
+
+        aspect-ratio:17/16;
+    }
+
+}
+
+
 .page{
     width:100%;
     max-width:1100px;
-    height:100%;
+    min-height:100vh;
     max-height:100vh;
 
     display:flex;
@@ -29,6 +81,7 @@ body{
 
     gap:10px;
 }
+
 .header{
 display:flex;
 flex-wrap:wrap;
@@ -59,7 +112,8 @@ flex-shrink:0;
     gap:4px;
     touch-action:none;
 
-    width:min(500px, 80vw);
+    height:70vh;
+    width:auto;
 
     aspect-ratio:17/16;
 
@@ -120,13 +174,14 @@ border-radius:24px;
 box-shadow:0 24px 60px rgba(0,0,0,.55);
 
 }
+
 .dialog-card img{
 
 width:100%;
 
 height:auto;
 
-max-height:320px;
+max-height:50vh;
 
 display:block;
 
@@ -198,15 +253,27 @@ width:96vw;
 }
 
 }
-@media(max-width:768px){
 
-.maze{
-    width:min(90vw, 420px);
+
+
+#mobileControls{
+    display:none;
 }
 
-.maze-wrap{
-    min-height:520px;
-}
+@media (hover:none){
+
+    #mobileControls{
+        display:block;
+        position:fixed;
+        bottom:20px;
+        left:20px;
+        z-index:9999;
+    }
+
+    #mobileControls button{
+        width:60px;
+        height:60px;
+    }
 
 }
 </style>
@@ -242,6 +309,18 @@ width:96vw;
             </div>
         </div>
     </div>
+</div>
+<div id="mobileControls">
+
+    <button id="up">⬆</button>
+
+    <div>
+        <button id="left">⬅</button>
+        <button id="right">➡</button>
+    </div>
+
+    <button id="down">⬇</button>
+
 </div>
 <script>
 const mazeData = [
@@ -290,26 +369,28 @@ function renderMaze(){
 }
 
 function updatePlayerPosition() {
+
     const firstCell = maze.querySelector('.cell');
 
     if (!firstCell) return;
 
-    const mazeRect = maze.getBoundingClientRect();
     const cellRect = firstCell.getBoundingClientRect();
 
-    const cellWidth = cellRect.width;
-    const cellHeight = cellRect.height;
+    const gap =
+    parseInt(getComputedStyle(maze).gap) || 0;
 
-    playerEl.style.width = `${cellWidth - 4}px`;
-    playerEl.style.height = `${cellHeight - 4}px`;
+    playerEl.style.width =
+    `${cellRect.width}px`;
+
+    playerEl.style.height =
+    `${cellRect.height}px`;
 
     playerEl.style.left =
-        `${maze.offsetLeft + playerPos.x * (cellWidth + 4)}px`;
+    `${maze.offsetLeft + playerPos.x * (cellRect.width + gap)}px`;
 
     playerEl.style.top =
-        `${maze.offsetTop + playerPos.y * (cellHeight + 4)}px`;
+    `${maze.offsetTop + playerPos.y * (cellRect.height + gap)}px`;
 }
-
 function canMove(x, y){
     if(x < 0 || x >= cols || y < 0 || y >= rows) return false;
     return mazeData[y][x] !== '#';
@@ -383,6 +464,31 @@ function voltarMapa(){
 
 window.addEventListener('resize', updatePlayerPosition);
 renderMaze();
+const upBtn = document.getElementById("up");
+const downBtn = document.getElementById("down");
+const leftBtn = document.getElementById("left");
+const rightBtn = document.getElementById("right");
+
+if(upBtn){
+    upBtn.addEventListener("click", () => movePlayer(0, -1));
+}
+
+if(downBtn){
+    downBtn.addEventListener("click", () => movePlayer(0, 1));
+}
+
+if(leftBtn){
+    leftBtn.addEventListener("click", () => movePlayer(-1, 0));
+}
+
+if(rightBtn){
+    rightBtn.addEventListener("click", () => movePlayer(1, 0));
+}
+upBtn?.addEventListener("pointerdown", () => movePlayer(0, -1));
+downBtn?.addEventListener("pointerdown", () => movePlayer(0, 1));
+leftBtn?.addEventListener("pointerdown", () => movePlayer(-1, 0));
+rightBtn?.addEventListener("pointerdown", () => movePlayer(1, 0));
+
 document.body.tabIndex = 0;
 document.body.focus();
 </script>

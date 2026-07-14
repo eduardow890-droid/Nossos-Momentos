@@ -5,6 +5,43 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+@media (orientation: landscape){
+
+    .foto{
+        width: 55px;
+        height: 55px;
+    }
+
+    #f1{
+        top: 8%;
+        left: 26%;
+    }
+
+    #f2{
+        top: 35%;
+        left: 38%;
+    }
+
+    #f3{
+        top: 8%;
+        left: 70%;
+    }
+
+    #f4{
+        top: 52%;
+        left: 90%;
+    }
+
+    #f5{
+        top: 62%;
+        left: 22%;
+    }
+
+    #f6{
+        top: 82%;
+        left: 58%;
+    }
+}
 
 body{
     margin:0;
@@ -94,37 +131,7 @@ body::before{
     animation:brilhar 1s infinite alternate;
 }
 
-/* posições dos pedaços */
 
-#f1{
-    top:150px;
-    left:220px;
-}
-
-#f2{
-    top:300px;
-    left:500px;
-}
-
-#f3{
-    top:180px;
-    left:800px;
-}
-
-#f4{
-    top:400px;
-    left:1000px;
-}
-
-#f5{
-    top:450px;
-    left:350px;
-}
-
-#f6{
-    top:550px;
-    left:700px;
-}
 
 .fotoEscola{
     display:none;
@@ -266,9 +273,42 @@ body::before{
     }
 
 }
+#cenario{
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+.foto{
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    cursor: pointer;
+
+    background-size: cover;
+    background-position: center;
+
+    border: 2px solid #fff;
+    border-radius: 12px;
+
+    animation: brilhar 1s infinite alternate;
+}
 </style>
 </head>
 <body>
+        <div id="cenario"> 
+            <div class="foto" id="f1" data-img="images/img_cortada1.png"></div>
+            <div class="foto" id="f2" data-img="images/img_cortada2.png"></div>
+            <div class="foto" id="f3" data-img="images/img_cortada3.png"></div>
+            <div class="foto" id="f4" data-img="images/img-cortada4.png"></div>
+            <div class="foto" id="f5" data-img="images/img_cortada5.png"></div>
+            <div class="foto" id="f6" data-img="images/img_cortada6.png"></div>
+        </div>
 
     <div class="missao">
 
@@ -281,13 +321,7 @@ body::before{
         <div id="contador" class="contador">
             0 / 6
         </div>
-        
-        <div class="foto" id="f1" data-img="images/img_cortada1.png"></div>
-        <div class="foto" id="f2" data-img="images/img_cortada2.png"></div>
-        <div class="foto" id="f3" data-img="images/img_cortada3.png"></div>
-        <div class="foto" id="f4" data-img="images/img-cortada4.png"></div>
-        <div class="foto" id="f5" data-img="images/img_cortada5.png"></div>
-        <div class="foto" id="f6" data-img="images/img_cortada6.png"></div>
+
     </div> 
     <div id="dialogo" class="dialogo">
     <p id="textoDialogo"></p>

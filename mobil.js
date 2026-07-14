@@ -50,3 +50,22 @@ if(enterButton){
     );
 
 }
+
+function atualizarControles() {
+
+    const controles = document.getElementById("mobileControls");
+
+    const isMobile =
+        navigator.maxTouchPoints > 0 &&
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    controles.style.display =
+        isMobile && window.innerWidth > window.innerHeight
+        ? "block"
+        : "none";
+}
+
+window.addEventListener("load", atualizarControles);
+window.addEventListener("resize", atualizarControles);
+
+//mobile escola.html

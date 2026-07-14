@@ -19,9 +19,21 @@ body{
 #danceArea{
     border:3px solid red;
 }
+.hit-zone{
+    position:absolute;
+    left:0;
+    bottom:50px;
+
+    width:100%;
+    height:80px;
+
+    background:rgba(0,255,0,.25);
+
+    z-index:1;
+}
 
 .progress-container{
-    width:400px;
+    width:min(90vw,400px);
     height:24px;
     background:#222;
     border-radius:12px;
@@ -35,11 +47,22 @@ body{
     background:linear-gradient(90deg,#00ff95,#00c8ff);
     transition:0.2s;
 }
+@keyframes fall{
 
+    from{
+        transform:translate(-50%, -50px);
+    }
+
+    to{
+        transform:translate(-50%, 320px);
+    }
+
+}
 #danceArea{
     position:relative;
-    width:360px;
-    height:360px;
+    width:min(90vw,360px);
+
+    height:min(90vw,360px);
 
     top:0;
 
@@ -47,53 +70,77 @@ body{
     background:rgba(0,0,0,0.4);
     border:3px solid white;
 }
-#personagem{
-    image-rendering:pixelated;
-    filter:drop-shadow(0 0 10px black);
-}
+
 
 .arrow{
     position:absolute;
+    z-index: 30;
     top:0;
     font-size:45px;
     animation:fall 2.5s linear forwards;
     text-shadow:0 0 10px white;
 }
+@media (orientation:landscape){
+
+    #mobileControls{
+        bottom:5px;
+    }
+
+    .hit-line{
+        bottom:90px;
+    }
+
+}
 
 .hit-line{
+    position:absolute;
 
-position:absolute;
+    bottom:70px;
 
-bottom:30px;
-left:0;
+    left:0;
 
-display:flex;
-justify-content:space-around;
+    width:100%;
 
-width:100%;
+    display:flex;
+    justify-content:space-around;
 
-font-size:40px;
-color:yellow;
+    font-size:40px;
 
+    color:yellow;
+
+    z-index:20;
 }
 
-@keyframes fall{
-
-from{
-    transform:translateY(-50px);
-}
-
-to{
-    transform:translateY(330px);
-}
-
+#mobileControls{
+    z-index:100;
 }
 html,body{
     width:100%;
     height:100%;
 }
 
+@media (orientation:landscape){
 
+    #danceArea{
+        width:420px;
+        height:280px;
+    }
+
+    .hit-zone{
+        bottom:40px;
+        height:70px;
+    }
+
+    .hit-line{
+        bottom:65px;
+        font-size:32px;
+    }
+
+    #mobileControls{
+        bottom:5px;
+    }
+
+}
 @keyframes dance{
     0%{
         transform:translateY(0);
@@ -114,15 +161,169 @@ html,body{
 }
 #reward{
 
-position:absolute;
-top:40%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:40px;
-display:none;
-background:black;
-padding:20px;
-border-radius:20px;
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.9);
+
+    z-index:9999;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    box-sizing:border-box;
+}
+
+#mobileControls{
+    display:none;
+}
+
+@media (hover:none){
+
+    #mobileControls{
+        display:flex;
+
+        justify-content:center;
+        gap:10px;
+
+        position:fixed;
+        bottom:15px;
+        left:50%;
+
+        transform:translateX(-50%);
+    }
+
+    #mobileControls button{
+        width:60px;
+        height:60px;
+        font-size:28px;
+    }
+
+}
+@media (orientation:landscape){
+
+    .game-layout{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:20px;
+    }
+
+    #personagem{
+        width:120px;
+        flex-shrink:0;
+    }
+@media (min-width:1024px){
+
+    #personagem{
+        width:250px;
+    }
+
+}
+/* Celular */
+#personagem{
+    width:120px;
+}
+
+/* Notebook */
+@media (min-width:1024px){
+
+    #personagem{
+        width:220px;
+    }
+
+}
+
+/* Monitor grande */
+@media (min-width:1440px){
+
+    #personagem{
+        width:300px;
+    }
+
+}
+    #danceArea{
+        width:420px;
+        height:220px;
+        margin:0;
+    }
+
+}
+
+
+#rewardContent{
+
+    background:rgba(0,0,0,.85);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    width:min(90vw,600px);
+
+    box-sizing:border-box;
+
+    box-shadow:0 0 30px gold;
+}
+
+#reward h1{
+    color:gold;
+    font-size:48px;
+}
+
+@media (max-width:768px){
+
+    #reward h1{
+        font-size:28px;
+    }
+
+    #reward h2{
+        font-size:18px;
+    }
+
+}
+
+
+#reward h2{
+    color:white;
+}
+
+#assistirBtn{
+
+    padding:15px 25px;
+
+    background:gold;
+    color:black;
+
+    border:none;
+    border-radius:12px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+#rewardVideo{
+
+    width:min(90vw,900px);
+
+    max-height:80vh;
+
+    border-radius:20px;
+}
+.dancing{
+
+    animation:dance .5s;
+
+    filter:
+        drop-shadow(0 0 10px yellow)
+        drop-shadow(0 0 20px gold);
 
 }
         </style>
@@ -132,12 +333,15 @@ border-radius:20px;
     <div id="progress"></div>
 </div>
 
-<img
-id="personagem"
-src="images/personagem.png"
-width="200">
+<div class="game-layout">
+
+    <img
+        id="personagem"
+        src="images/danca.png">
 
 <div id="danceArea">
+
+    <div class="hit-zone"></div>
 
     <div class="hit-line">
         <div>⬅</div>
@@ -147,9 +351,46 @@ width="200">
     </div>
 
 </div>
-<div id="reward"></div>
-        
-    <script>
+
+</div>
+
+<div id="reward">
+
+    <div id="rewardContent">
+
+        <h1>🏆 MEMORIA DESBLOQUEADA</h1>
+
+        <h2>Nosso primeiro encontro 💛</h2>
+
+        <button id="assistirBtn">
+            Assistir recompensa
+        </button>
+
+    </div>
+
+    <video
+        id="rewardVideo"
+        width="100%"
+        controls
+        style="display:none;">
+
+        <source
+            src="images/parque.mp4"
+            type="video/mp4">
+    </video>
+
+</div>
+
+
+<div id="mobileControls">
+    <button data-key="ArrowLeft">⬅</button>
+    <button data-key="ArrowDown">⬇</button>
+    <button data-key="ArrowUp">⬆</button>
+    <button data-key="ArrowRight">➡</button>
+</div>
+    <script>  
+    let recompensaMostrada = false;
+
 const danceArea =
 document.getElementById("danceArea");
 
@@ -157,7 +398,11 @@ let progress = 0;
 
 function addScore(){
 
-    progress += 10;
+    if(recompensaMostrada){
+        return;
+    }
+
+    progress += 5;
 
     if(progress > 100){
         progress = 100;
@@ -167,8 +412,13 @@ function addScore(){
     .style.width = progress + "%";
 
     if(progress >= 100){
+
+        recompensaMostrada = true;
+
         showReward();
+
     }
+
 }
 
 
@@ -181,18 +431,17 @@ const arrows = [
 
 function showReward(){
 
-let r=document.getElementById("reward");
+    document.querySelector(".game-layout")
+        .style.display = "none";
 
-r.innerHTML="🎉 Nova dança desbloqueada!";
+    document.querySelector(".progress-container")
+        .style.display = "none";
 
-r.style.display="block";
+    document.getElementById("mobileControls")
+        .style.display = "none";
 
-
-setTimeout(()=>{
-
-r.style.display="none";
-
-},3000);
+    document.getElementById("reward")
+        .style.display = "flex";
 
 }
 
@@ -224,8 +473,19 @@ function createArrow(direction){
 
     }[direction];
 
- arrow.style.left =
-Math.floor(Math.random()*300)+"px";
+const posicoes = {
+    ArrowLeft: "12.5%",
+    ArrowDown: "37.5%",
+    ArrowUp: "62.5%",
+    ArrowRight: "87.5%"
+};
+
+arrow.style.left =
+posicoes[direction];
+
+
+
+
 
     danceArea.appendChild(arrow);
 
@@ -246,39 +506,80 @@ arrow.remove();
     },3000);
 
 }
-document.addEventListener(
-"keydown",
-e => {
+document.addEventListener("keydown", e => {
+    processarTecla(e.code);
+});
+
+document
+.querySelectorAll("#mobileControls button")
+.forEach(btn => {
+
+    btn.addEventListener("pointerdown", () => {
+
+        processarTecla(
+            btn.dataset.key
+        );
+
+    });
+
+});
+
+function danceCharacter(){
+
+    const img =
+    document.getElementById("personagem");
+
+    img.src =
+    "images/danca" +
+    Math.ceil(Math.random()*5)
+    + ".png";
+
+    img.classList.add("dancing");
+
+    setTimeout(()=>{
+
+        img.classList.remove("dancing");
+
+        img.src = "images/danca.png";
+
+    },400);
+
+}
+
+function processarTecla(codigo){
+
+    const hitZone =
+    document.querySelector(".hit-zone");
+
+    const zona =
+    hitZone.getBoundingClientRect();
 
     const arrowsOnScreen =
     document.querySelectorAll(".arrow");
 
-    arrowsOnScreen.forEach(arrow=>{
+    arrowsOnScreen.forEach(arrow => {
 
-let area =
-danceArea.getBoundingClientRect();
+        const seta =
+        arrow.getBoundingClientRect();
 
-let arrowPos =
-arrow.getBoundingClientRect();
+        const acertou =
+            seta.bottom >= zona.top &&
+            seta.top <= zona.bottom;
 
+        console.log(
+            "seta:", arrow.dataset.key,
+            "botao:", codigo,
+            "acertou:", acertou
+        );
 
-let y =
-arrowPos.top - area.top;
+        if(
+            arrow.dataset.key === codigo &&
+            acertou
+        ){
 
+            console.log("ACERTOU!");
 
-if(
-arrow.dataset.key === e.code &&
-y > 250 &&
-y < 360
-){
-
-            arrow.style.display="none";
-
-setTimeout(()=>{
-
-arrow.remove();
-
-},100);
+            arrow.remove();
 
             addScore();
 
@@ -288,30 +589,53 @@ arrow.remove();
 
     });
 
-});
-
-function danceCharacter(){
-
-    const img = document.getElementById("personagem");
-
-    console.log(img);
-
-    img.src =
-    "images/danca" +
-    Math.ceil(Math.random()*3)
-    + ".png";
-
-    img.classList.add("dancing");
-
-    setTimeout(()=>{
-
-        img.classList.remove("dancing");
-
-        img.src = "images/personagem.png";
-
-    },400);
-
 }
+
+  document
+.getElementById("assistirBtn")
+.addEventListener("click", () => {
+
+    const content =
+    document.getElementById("rewardContent");
+
+    const video =
+    document.getElementById("rewardVideo");
+
+    content.style.display = "none";
+
+    video.style.display = "block";
+
+    video.currentTime = 0;
+
+    video.play();
+
+    if(video.requestFullscreen){
+        video.requestFullscreen();
+    }
+
+});
+const video =
+document.getElementById("rewardVideo");
+
+video.onended = () => {
+
+    const progresso =
+        JSON.parse(
+            localStorage.getItem("progresso")
+        ) || {};
+
+    progresso.parque = true;
+
+    localStorage.setItem(
+        "progresso",
+        JSON.stringify(progresso)
+    );
+
+    window.location.href =
+    "index.html";
+
+};
+
 
 </script>
 </body>

@@ -244,43 +244,89 @@ body{
     margin-bottom:10px;
 
 }
+/* Escondido por padrão */
 #mobileControls{
-    display:none;
+    display: none;
 }
 
-@media (max-width:768px){
+/* Apenas celulares/tablets com toque */
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
 
     #mobileControls{
+        display: block;
+    }
 
+}
+
+
+
+
+@media screen and (max-height:768px) {
+
+
+    #mobileControls{
         display:block;
-
-        position:fixed;
-
-        bottom:20px;
-        left:50%;
-
-        transform:translateX(-50%);
-
-        z-index:9999;
-
-        text-align:center;
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
     }
 
     #mobileControls button{
+        pointer-events: auto;
 
-        width:70px;
-        height:70px;
+        width: 65px;
+        height: 65px;
 
-        margin:5px;
+        border: none;
+        border-radius: 15px;
 
-        font-size:28px;
+        background: rgba(40,40,40,.45);
+        color: #fff;
 
-        border:none;
+        font-size: 28px;
+        font-weight: bold;
 
-        border-radius:15px;
-
-        background:#333;
-        color:white;
+        backdrop-filter: blur(4px);
     }
 
+    #up{
+        position: fixed;
+        left: 90px;
+        bottom: 120px;
+    }
+
+    #left{
+        position: fixed;
+        left: 20px;
+        bottom: 50px;
+    }
+
+    #right{
+        position: fixed;
+        left: 160px;
+        bottom: 50px;
+    }
+
+    #down{
+        position: fixed;
+        left: 90px;
+        bottom: -20px;
+    }
+
+    #enter{
+        position: fixed;
+        right: 30px;
+        bottom: 60px;
+
+        width: 90px;
+        height: 90px;
+
+        border-radius: 50%;
+        font-size: 40px;
+    }
+
+    #mobileControls button:active{
+        transform: scale(.92);
+    }
 }
