@@ -95,29 +95,20 @@
  <script src="mapa2.js"></script>
  <script src="mobil.js"></script>
  <script>
-const introJaVista =
-localStorage.getItem("introVista");
+const introJaVista = sessionStorage.getItem("introVista");
 
-if(introJaVista === "true"){
-
-    document.getElementById("intro")
-    .style.display = "none";
-
+if (introJaVista === "true") {
+    document.getElementById("intro").style.display = "none";
 }
+
 document
 .getElementById("btnIniciar")
 .addEventListener("click", () => {
 
-    localStorage.setItem(
-        "introVista",
-        "true"
-    );
+    sessionStorage.setItem("introVista", "true");
 
-    document.getElementById("intro")
-    .style.display = "none";
-
-});
- </script>
+    document.getElementById("intro").style.display = "none";
+}); </script>
 </div>
 
 </body>

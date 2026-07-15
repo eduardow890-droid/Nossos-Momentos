@@ -50,20 +50,7 @@ body{
 }
 
 
-.header{
-display:flex;
-flex-wrap:wrap;
-justify-content:space-between;
-align-items:flex-start;
-
-gap:10px;
-
-flex-shrink:0;
-}
-.header h1{margin:0;font-size:2rem;color:#ffd45b;text-transform:uppercase;letter-spacing:1px;}
-.header p{margin:0;max-width:720px;line-height:1.7;color:#dce6ff;}
 .maze-wrap{
-    position:relative;
 
     display:flex;
     justify-content:center;
@@ -100,29 +87,22 @@ border-radius:clamp(3px,.6vw,8px);
 transition:.2s;
 
 }
-
-.maze-wrap{
-    position:relative;
-}
-
 .player{
-    pointer-events:none;
+    width:100%;
+    height:100%;
+    display:block;
+    background:url('images/personagem.png')
+               center/contain
+               no-repeat;
 }
+
+
+
 .cell.small{border-radius:6px;}
 .cell.wall{background:#0b1834;box-shadow:inset 0 0 8px rgba(0,0,0,0.45);}
 .cell.floor{background:rgba(233,245,255,0.18);backdrop-filter:blur(4px);box-shadow:inset 0 0 8px rgba(255,255,255,0.05);}
 .cell.goal{position:relative;background:linear-gradient(135deg,#ffb74d,#ffea5e);box-shadow:0 0 18px rgba(255,183,77,0.45);border:2px solid rgba(255,255,255,0.28);}
 .cell.goal::after{content:'';position:absolute;inset:18% 18%;background:url('images/namoradoSTY.jpg') center/contain no-repeat;border-radius:12px;pointer-events:none;}
-.player{
-    position:absolute;
-    background:url('images/personagem.png') center/contain no-repeat;
-    z-index:2;
-    border:none;
-    box-shadow:none;
-}
-.info-box{margin-top:18px;padding:18px;background:rgba(7,12,24,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:18px;}
-.info-box h2{margin:0 0 10px;color:#7ce0ff;font-size:1.1rem;}
-.info-box p{margin:0;color:#dce6ff;line-height:1.7;}
 .dialog{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,16,0.88);backdrop-filter:blur(4px);z-index:10;}
 .dialog.visible{display:flex;}
 .dialog-card{
@@ -167,25 +147,7 @@ padding:8px;
 .dialog-card h2{margin:0 0 12px;font-size:1.6rem;color:#ffd45b;}
 .dialog-card p{margin:0 0 16px;line-height:1.7;color:#e8f0ff;}
 .dialog-card button{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;background:#60c4ff;color:#08112b;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 10px 25px rgba(96,196,255,0.24);}
-.instructions{margin-top:16px;padding:16px;background:rgba(12,20,40,0.95);border:1px dashed rgba(255,255,255,0.14);border-radius:18px;color:#dfe8ff;}
-.instructions strong{color:#ffd45b;}
-@media (max-width:900px){
 
-.header h1{
-
-font-size:1.5rem;
-
-}
-
-.info-box,
-
-.instructions{
-
-padding:12px;
-
-}
-
-}
 
 @media (max-width:600px){
 
@@ -201,19 +163,7 @@ gap:6px;
 
 }
 
-.header p{
 
-font-size:.9rem;
-
-}
-
-.info-box p,
-
-.instructions p{
-
-font-size:.9rem;
-
-}
 
 .dialog-card{
 
@@ -229,11 +179,7 @@ width:96vw;
 
 @media (max-width:768px){
 
-    .header,
-    .info-box,
-    .instructions{
-        display:none;
-    }
+
 
     body{
         margin:0;
@@ -272,9 +218,9 @@ width:96vw;
     }
 
     #mobileControls button{
-        width:70px;
-        height:70px;
-        font-size:28px;
+width:56px;
+height:56px;
+font-size:22px;
     }
 }
 
@@ -300,28 +246,92 @@ width:96vw;
     }
 
 }
+.intro{
+    position:fixed;
+    inset:0;
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.8);
+    z-index:20;
+}
+.intro.visible{
+    opacity:1;
+    visibility:visible;
+}
+.intro-card{
+    width:min(600px,90vw);
+    background:#081122;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:24px;
+    padding:24px;
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+}
+.objective{
+    margin:20px 0;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(255,255,255,.05);
+}
+.intro-card button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 20px;
+    background:#60c4ff;
+    color:#08112b;
+    border:none;
+    border-radius:14px;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+}
 </style>
 </head>
 <body>
+
 <div class="page">
-    <div class="header">
-        <div>
-            <h1>Shopping: encontro no labirinto</h1>
-            <p>Ajude a namorada a encontrar o namorado no shopping. Quando ela chegar até ele, ele pedirá ajuda para buscar algo no McDonald's e seguir adiante na história.</p>
-        </div>
-    </div>
+
     <div class="maze-wrap">
         <div id="maze" class="maze"></div>
-        <div id="player" class="player"></div>
     </div>
-    <div class="info-box">
-        <h2>Como jogar</h2>
-        <p>Use as <strong>setas do teclado</strong> para mover a personagem pelo labirinto. Evite paredes e chegue até o namorado marcado com amarelo. Quando encontrar o ponto de encontro, ele pedirá que você vá até o McDonald's.</p>
-    </div>
-    <div class="instructions">
-        <p><strong>Dica:</strong> o objetivo é alcançar o ponto amarelo no canto inferior direito. O namorado está à espera e precisará de ajuda para continuar a história.</p>
-    </div>
+
 </div>
+
+<!-- INTRODUÇÃO -->
+<div id="intro" class="intro">
+
+    <div class="intro-card">
+
+        <h1 id="introTitle">📍 Shopping</h1>
+
+        <p id="introText">
+            Ela respira fundo enquanto entra no shopping.
+
+            "Foi aqui que passamos uma tarde inteira juntos..."
+
+            "Talvez ele lembre onde está a próxima fotografia."
+
+            "Preciso encontrá-lo."
+        </p>
+
+        <div class="objective">
+            <h3>Objetivo</h3>
+            <p>Encontre o namorado no labirinto.</p>
+        </div>
+
+        <button id="introButton" >
+            Começar
+        </button>
+
+    </div>
+
+</div>
+
+<!-- DIÁLOGO FINAL -->
 <div id="dialog" class="dialog" role="dialog" aria-modal="true">
     <div class="dialog-card">
         <img id="dialogImg" src="images/namoradoSTY.jpg" alt="Namorado">
@@ -380,60 +390,64 @@ const mazeDataMobile = [
 ];
 
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
+let controlsEnabled = false;
 const mazeData = isMobile
     ? mazeDataMobile
     : mazeDataDesktop;
 const maze = document.getElementById('maze');
-const playerEl = document.getElementById('player');
-const dialog = document.getElementById('dialog');
+const cells = [];
 const rows = mazeData.length;
 const cols = mazeData[0].length;
-const cellSize = 100 / cols;
-let playerPos = { x: 1, y: 1 };
+
 
 maze.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
 maze.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
 
+function findPlayerStart(map){
+
+    for(let y = 0; y < map.length; y++){
+
+        for(let x = 0; x < map[y].length; x++){
+
+            if(map[y][x] === 'P'){
+                return {x,y};
+            }
+
+        }
+    }
+
+    throw new Error("P não encontrado");
+}
+
+let playerPos = findPlayerStart(mazeData);
+
+const player =
+document.createElement('div');
+
+player.className = 'player';
+
 function renderMaze(){
     maze.innerHTML = '';
     for(let y = 0; y < rows; y++){
+        cells[y] = [];
         for(let x = 0; x < cols; x++){
             const char = mazeData[y][x];
             const cell = document.createElement('div');
+            cells[y][x] = cell;
             cell.classList.add('cell');
             if(char === '#') cell.classList.add('wall');
             else if(char === 'B') cell.classList.add('goal');
-            else cell.classList.add('floor');
+           else if(char === 'P')
+                cell.classList.add('floor');
+            else
+                cell.classList.add('floor');
             maze.appendChild(cell);
         }
     }
-    updatePlayerPosition();
+
 }
 
-function updatePlayerPosition() {
 
-    const firstCell = maze.querySelector('.cell');
-
-    if (!firstCell) return;
-
-    const cellRect = firstCell.getBoundingClientRect();
-
-    const gap =
-    parseInt(getComputedStyle(maze).gap) || 0;
-
-    playerEl.style.width =
-    `${cellRect.width}px`;
-
-    playerEl.style.height =
-    `${cellRect.height}px`;
-
-    playerEl.style.left =
-    `${maze.offsetLeft + playerPos.x * (cellRect.width + gap)}px`;
-
-    playerEl.style.top =
-    `${maze.offsetTop + playerPos.y * (cellRect.height + gap)}px`;
-}
 function canMove(x, y){
     if(x < 0 || x >= cols || y < 0 || y >= rows) return false;
     return mazeData[y][x] !== '#';
@@ -442,41 +456,85 @@ function canMove(x, y){
 function checkGoal(x, y){
     return mazeData[y][x] === 'B';
 }
+function renderPlayer(){
 
-function movePlayer(dx, dy){
+    cells[playerPos.y]
+         [playerPos.x]
+         .appendChild(player);
+
+}
+function movePlayer(dx,dy){
+
+    if(!controlsEnabled){
+    return;
+}
     const nextX = playerPos.x + dx;
     const nextY = playerPos.y + dy;
-    if(canMove(nextX, nextY)){
-        playerPos = { x: nextX, y: nextY };
-        updatePlayerPosition();
-        if(checkGoal(nextX, nextY)){
-            showDialog();
-        }
+
+    if(!canMove(nextX,nextY)){
+        return;
     }
+
+    player.remove();
+
+    playerPos.x = nextX;
+    playerPos.y = nextY;
+
+    renderPlayer();
+
+    if(checkGoal(nextX,nextY)){
+        showDialog();
+    }
+
 }
+    function showIntro(){
+        controlsEnabled = false;
+
+    document
+        .getElementById('intro')
+        .classList.add('visible');
+
+}
+const introButton =
+document.getElementById("introButton");
+
+introButton.addEventListener("click", () => {
+
+    document
+        .getElementById("intro")
+        .classList.remove("visible");
+
+    controlsEnabled = true;
+
+});
 
 document.addEventListener('keydown', (event) => {
+   if(!controlsEnabled){
+    return;
+}
     switch(event.code){
-        case 'ArrowUp':
-            movePlayer(0, -1);
-            event.preventDefault();
-            break;
-        case 'ArrowDown':
-            movePlayer(0, 1);
-            event.preventDefault();
-            break;
-        case 'ArrowLeft':
-            movePlayer(-1, 0);
-            event.preventDefault();
-            break;
-        case 'ArrowRight':
-            movePlayer(1, 0);
-            event.preventDefault();
-            break;
+case 'ArrowUp':
+    movePlayer(0,-1);
+    event.preventDefault();
+    break;
+case 'ArrowDown':
+    movePlayer(0,1);
+    event.preventDefault();
+    break;
+case 'ArrowLeft':
+    movePlayer(-1,0);
+    event.preventDefault();
+    break;
+case 'ArrowRight':
+    movePlayer(1,0);
+    event.preventDefault();
+    break;
     }
 });
 
 function showDialog(){
+
+    controlsEnabled = false;
     const progresso = JSON.parse(localStorage.getItem('progresso')) || {};
     const hasMCD = progresso.mcd === true;
     const dialogImg = document.getElementById('dialogImg');
@@ -505,8 +563,11 @@ function voltarMapa(){
     window.location.href = 'index.html';
 }
 
-window.addEventListener('resize', updatePlayerPosition);
 renderMaze();
+
+
+renderPlayer();
+showIntro();
 const upBtn = document.getElementById("up");
 const downBtn = document.getElementById("down");
 const leftBtn = document.getElementById("left");
@@ -527,10 +588,6 @@ if(leftBtn){
 if(rightBtn){
     rightBtn.addEventListener("click", () => movePlayer(1, 0));
 }
-upBtn?.addEventListener("pointerdown", () => movePlayer(0, -1));
-downBtn?.addEventListener("pointerdown", () => movePlayer(0, 1));
-leftBtn?.addEventListener("pointerdown", () => movePlayer(-1, 0));
-rightBtn?.addEventListener("pointerdown", () => movePlayer(1, 0));
 
 document.body.tabIndex = 0;
 document.body.focus();

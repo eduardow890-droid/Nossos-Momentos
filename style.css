@@ -348,114 +348,85 @@ body{
 
 }
 #intro{
+    position: fixed;
+    inset: 0;
+    background: rgba(20,20,30,.85);
+    backdrop-filter: blur(8px);
 
-    position:fixed;
-    inset:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    display:flex;
-    flex-direction:column;
+    z-index: 9999;
+    padding: 20px;
+}
 
-    justify-content:center;
-    align-items:center;
+#introContent{
+    width: 100%;
+    max-width: 400px;
 
-    text-align:center;
-
-    background:
-    linear-gradient(
+    background: linear-gradient(
         135deg,
-        rgba(99,102,241,.75),
-        rgba(168,85,247,.75),
-        rgba(139,92,246,.75)
+        #2d174d,
+        #5a2ca0
     );
 
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    color: white;
+    text-align: center;
 
-    z-index:99999;
+    padding: 25px;
+    border-radius: 25px;
 
-    color:white;
+    box-shadow:
+    0 0 30px rgba(255,215,0,.3);
 
-    padding:20px;
+    animation: aparecer .6s ease;
 }
 
-#intro h1{
-
-    font-size:64px;
-
-    margin-bottom:20px;
-
-    color:white;
-
-    text-shadow:
-        0 0 15px rgba(255,255,255,.5);
+#introContent h1{
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #FFD700;
 }
 
-#intro p{
-
-    font-size:22px;
-
-    line-height:1.6;
-
-    opacity:.95;
+#introContent p{
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 10px 0;
 }
 
 #btnIniciar{
+    width: 100%;
+    margin-top: 20px;
 
-    margin-top:25px;
+    border: none;
+    border-radius: 15px;
 
-    padding:15px 40px;
+    padding: 15px;
 
-    border:none;
+    background: #FFD700;
+    color: #2d174d;
 
-    border-radius:50px;
+    font-size: 1.1rem;
+    font-weight: bold;
 
-    font-size:20px;
+    cursor: pointer;
 
-    font-weight:bold;
-
-    color:white;
-
-    background:
-    linear-gradient(
-        135deg,
-        #8b5cf6,
-        #c084fc
-    );
-
-    cursor:pointer;
-
-    transition:.3s;
+    transition: .3s;
 }
 
 #btnIniciar:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:
-        0 0 25px rgba(192,132,252,.6);
-
+    transform: scale(1.05);
 }
 
+@keyframes aparecer{
+    from{
+        transform: scale(.8);
+        opacity: 0;
+    }
 
-#btnIniciar:hover{
-
-    transform:scale(1.05);
-}
-#introContent{
-
-    background:rgba(255,255,255,.1);
-
-    border:1px solid rgba(255,255,255,.2);
-
-    backdrop-filter:blur(20px);
-
-    padding:40px;
-
-    border-radius:30px;
-
-    max-width:700px;
-
-    box-shadow:
-        0 8px 32px rgba(0,0,0,.3);
-
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
 }

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: #111827;
+        }
+#game {
+    width:800px;
+
+    height:500px;
+
+    border: 2px solid black;
+    position: relative;
+    overflow: hidden;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+@media (max-width: 900px){
+
+    #game{
+        width:95vw;
+        height:60vh;
+    }
+
+}
+
+#player{
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    object-fit: contain;
+    z-index:10;
+}
+
+#irma {
+    width: 40px;
+    height: 40px;
+    z-index:10;
+    position: absolute;
+    left: 500px;
+    top: 300px;
+}
+
+#intro{
+    position: fixed;
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        #1f2937,
+        #111827
+    );
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+#intro-box{
+    width: 700px;
+    max-width: 90%;
+
+    background: rgba(255,255,255,0.08);
+
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+}
+
+#intro-box h1{
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+#intro-box p{
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+#startBtn{
+    margin-top: 25px;
+
+    background: #22c55e;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 15px 35px;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#startBtn:hover{
+    transform: scale(1.05);
+    background: #16a34a;
+}
+#painelIrma{
+    position: absolute;
+    left: 850px;
+    top: 70px;
+
+    width: 300px;
+
+    color: white;
+}
+#painelIrma{
+
+    background: rgba(255,255,255,.05);
+
+    border-radius:20px;
+
+    padding: 10px;
+
+    border:1px solid rgba(255,255,255,.1);
+}
+
+
+#retratoIrma{
+    width: 120px;
+    image-rendering: pixelated;
+    display: block;
+    margin: auto;
+}
+
+#falaIrma{
+    background: white;
+    color: #222;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.4);
+
+    position: relative;
+}
+#falaIrma::before{
+    content:"";
+
+    position:absolute;
+
+    top:-15px;
+    left:40px;
+
+    border-left:15px solid transparent;
+    border-right:15px solid transparent;
+    border-bottom:15px solid white;
+}
+#retratoIrma{
+    width:220px;
+
+    display:block;
+    margin:auto;
+
+    border-radius:20px;
+
+    border:4px solid white;
+
+    box-shadow:0 0 25px rgba(255,255,255,.2);
+}
+#nomeIrma{
+    text-align:center;
+    color:white;
+}
+#capturarBtn{
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    width: 120px;
+    height: 120px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: #ef4444;
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+@media(max-width:900px){
+
+    body{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+
+    #painelIrma{
+        position:relative;
+
+        left:auto;
+        top:auto;
+
+        width:95%;
+
+        margin:10px auto;
+    }
+
+    #game{
+        width:95vw;
+        height:50vh;
+    }
+
+}
+#mapa{
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    z-index:0;
+}
+#joystick{
+
+    display:none;
+
+    position:fixed;
+
+    left:15px;
+    bottom:15px;
+
+    z-index:9999;
+}
+
+#joystick button{
+
+    width:70px;
+    height:70px;
+
+    font-size:28px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#374151;
+
+    color:white;
+}
+#joystick{
+    display:none;
+}
+
+@media(max-width:900px){
+
+    #joystick{
+        display:block;
+    }
+
+}
+@media (max-width: 430px){
+
+    #game{
+        width: 95vw;
+        height: 50vh;
+    }
+
+    #capturarBtn{
+
+        width: 90px;
+        height: 90px;
+
+        font-size: 18px;
+    }
+
+    #joystick button{
+
+        width: 65px;
+        height: 65px;
+
+        font-size: 24px;
+    }
+
+}
+#cenaFinal{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.95);
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:99999;
+
+    color:white;
+}
+
+#cenaBox{
+
+    width:700px;
+    max-width:90%;
+
+    text-align:center;
+}
+
+#textoCena{
+
+    font-size:28px;
+    line-height:1.6;
+}
+
+#fotoMemoria{
+
+    width:250px;
+
+    border-radius:20px;
+
+    border:4px solid white;
+
+    margin-top:25px;
+}
+    </style>
+</head>  
+<body>
+    <div id="painelIrma">
+    <h2 id="nomeIrma">🌟 Maythe</h2>
+    <img src="images/irmaReal.png" id="retratoIrma">
+
+    <div id="falaIrma">
+        Você nunca vai me pegar! 😝
+    </div>
+
+</div>
+<div id="intro">
+
+    <div id="intro-box">
+
+        <h1>🏃 Pique-Pega com a Maninha</h1>
+
+        <p>
+            Sua irmã mais nova resolveu aprontar mais uma vez.
+            Depois de dizer que você nunca conseguiria alcançá-la,
+            ela saiu correndo pelo condomínio.
+        </p>
+
+        <p>
+            Desvie das árvores e obstáculos, encontre o melhor caminho
+            e prove que ela estava errada!
+        </p>
+
+        <h3>🎮 Controles</h3>
+
+        <p>W • A • S • D</p>
+
+        <button id="startBtn">
+            Começar Missão
+        </button>
+        
+
+    </div>
+
+</div></div>
+    <p id="status">Pegue sua irmã!</p>
+<div id="game">
+    <img src="images/condo.png" id="mapa"></img>
+    <img src="images/tataFRENTE.png" id="player"></img>
+    <img src="images/irmaFRENTE.png" id="irma"></img>
+    
+
+    <div class="obstaculo" style="left:200px;top:100px;"></div>
+    <div class="obstaculo" style="left:400px;top:250px;"></div>
+    <div class="obstaculo" style="left:600px;top:150px;"></div>
+</div>
+<div id="joystick">
+
+    <button id="up">⬆️</button>
+
+    <div>
+        <button id="left">⬅️</button>
+        <button id="right">➡️</button>
+    </div>
+
+    <button id="down">⬇️</button>
+
+</div>
+<button id="capturarBtn">
+    ✋ PEGAR
+</button>
+
+<div id="cenaFinal" style="display:none;">
+
+    <div id="cenaBox">
+
+        <h2>🌟 Missão Completa</h2>
+
+        <p id="textoCena">
+            ...
+        </p>
+
+        <img
+            id="fotoMemoria" src="images/foto_escola.jpg"></img>
+
+    </div>
+
+</div>
+    <script>
+        const player = document.getElementById("player");
+const irma = document.getElementById("irma");
+const statusText = document.getElementById("status");
+
+let alvoX = 500;
+let alvoY = 300;
+
+let podeCapturar = false;
+
+const pontosEstrategicos = [
+
+    { x: 430, y: 240, nome: "Playground" },
+
+    { x: 540, y: 100, nome: "Bloco B" },
+
+    { x: 560, y: 350, nome: "Bloco D" },
+
+    { x: 390, y: 240, nome: "Jardim" },
+
+    { x: 390, y: 430, nome: "Portaria" }
+
+];
+
+const falas = [
+    "Você nunca vai me pegar! 😝",
+    "Sou rápida demais! 🏃",
+    "Tenta outra vez! 😂",
+    "Nem chegou perto! 🤭",
+    "Você corre igual uma tartaruga! 🐢",
+    "Aposto que vai desistir! 😆",
+    "Cadê você? Não estou vendo! 👀"
+];
+const dialogos = [
+{
+    fala:"😝 Você nunca vai me pegar!",
+    foto:"images/irmaReal.png"
+},
+{
+    fala:"😂 Tenta outra vez!",
+    foto:"images/irma2.png"
+}];
+
+let intervaloIrma;
+let intervaloFugir;
+
+
+let px = 100;
+let py = 100;
+const teclas = {};
+
+document.addEventListener("keydown", (e) => {
+    teclas[e.key.toLowerCase()] = true;
+});
+
+document.addEventListener("keyup", (e) => {
+    teclas[e.key.toLowerCase()] = false;
+});
+
+function criarControleTouch(id, tecla){
+
+    const botao = document.getElementById(id);
+
+    botao.addEventListener("touchstart", (e)=>{
+
+        e.preventDefault();
+
+        teclas[tecla] = true;
+
+    });
+
+    botao.addEventListener("touchend", ()=>{
+
+        teclas[tecla] = false;
+
+    });
+
+}
+
+criarControleTouch("up","w");
+criarControleTouch("down","s");
+criarControleTouch("left","a");
+criarControleTouch("right","d");
+
+document.addEventListener("keydown", (e)=>{
+
+    if(e.code === "Space"){
+
+        capturar();
+clearInterval(intervaloFugir);
+
+irma.style.display = "none";
+
+mostrarCenaFinal();
+
+    }
+
+});
+
+function mostrarCenaFinal(){
+
+    document.getElementById("cenaFinal").style.display =
+        "flex";
+
+    const texto =
+        document.getElementById("textoCena");
+
+    texto.textContent =
+        "😅 Maythe: Tá bom... você me pegou.";
+
+    setTimeout(()=>{
+
+        texto.textContent =
+            "😊 Maythe: Foi divertido brincar com você.";
+
+    },3000);
+
+    setTimeout(()=>{
+
+        texto.textContent =
+            "🎁 Maythe: Mas eu tenho uma recompensa.";
+
+    },6000);
+
+    setTimeout(()=>{
+
+        texto.textContent =
+            "📷 Maythe: Esta foto guarda uma lembrança especial.";
+
+    },9000);
+
+    setTimeout(()=>{
+
+        texto.textContent =
+            "🌟 MEMÓRIA DESBLOQUEADA";
+
+        document
+        .getElementById("fotoMemoria")
+        .style.display = "block";
+
+    },12000);
+
+}
+
+
+function atualizar() {
+
+    let novoX = px;
+    let novoY = py;
+    
+
+    const velocidade = 4;
+
+    let dx = 0;
+    let dy = 0;
+
+if (teclas["w"]) {
+    dy--;
+    player.src = "images/tataCOSTA.png";
+}
+
+if (teclas["s"]) {
+    dy++;
+    player.src = "images/tataFRENTE.png";
+}
+
+if (teclas["a"]) {
+    dx--;
+    player.src = "images/tataESQUERDA.png";
+}
+
+if (teclas["d"]) {
+    dx++;
+    player.src = "images/tataDIREITA.png";
+}
+
+    if (dx !== 0 || dy !== 0) {
+
+        const tamanho = Math.sqrt(dx * dx + dy * dy);
+
+        dx /= tamanho;
+        dy /= tamanho;
+
+        novoX += dx * velocidade;
+        novoY += dy * velocidade;
+    }
+
+    novoX = Math.max(0, Math.min(novoX, 760));
+    novoY = Math.max(0, Math.min(novoY, 460));
+
+    player.style.left = novoX + "px";
+    player.style.top = novoY + "px";
+
+    const playerRect = player.getBoundingClientRect();
+
+    let bateu = false;
+
+    document.querySelectorAll(".obstaculo").forEach(obs => {
+        if (colidiu(playerRect, obs.getBoundingClientRect())) {
+            bateu = true;
+        }
+    });
+
+    if (!bateu) {
+        px = novoX;
+        py = novoY;
+    }
+    
+    verificarColisao();
+
+let velocidadeIrma = 2;
+
+const distanciaJogador =    
+Math.sqrt(
+    (px - irma.offsetLeft) ** 2 +
+    (py - irma.offsetTop) ** 2
+);
+
+if (distanciaJogador < 150) {
+    velocidadeIrma = 5;
+}
+
+const dxIrma = alvoX - irma.offsetLeft;
+const dyIrma = alvoY - irma.offsetTop;
+
+const distanciaIrma =
+    Math.sqrt(dxIrma * dxIrma + dyIrma * dyIrma);
+
+if (distanciaIrma > 1) {
+
+    irma.style.left =
+        (irma.offsetLeft +
+        dxIrma / distanciaIrma * velocidadeIrma) + "px";
+
+    irma.style.top =
+        (irma.offsetTop +
+        dyIrma / distanciaIrma * velocidadeIrma) + "px";
+}
+
+    requestAnimationFrame(atualizar);
+}
+
+
+function trocarFala(){
+
+    const sorteio =
+        dialogos[Math.floor(Math.random() * dialogos.length)];
+
+    document.getElementById("falaIrma").textContent =
+        sorteio.fala;
+
+    document.getElementById("retratoIrma").src =
+        sorteio.foto;
+}
+
+setInterval(trocarFala, 3000);
+
+function escolherDestinoSeguro() {
+
+    let melhorLocal = pontosEstrategicos[0];
+    let maiorDistancia = 0;
+
+    pontosEstrategicos.forEach(local => {
+
+        const distancia = Math.sqrt(
+            (local.x - px) ** 2 +
+            (local.y - py) ** 2
+        );
+
+        if(distancia > maiorDistancia){
+
+            maiorDistancia = distancia;
+            melhorLocal = local;
+
+        }
+
+    });
+
+    alvoX = melhorLocal.x;
+    alvoY = melhorLocal.y;
+
+    document.getElementById("falaIrma").textContent =
+        "🏃 Vou para " + melhorLocal.nome + "!";
+}
+
+function moverIrma() {
+
+escolherDestinoSeguro();
+}
+
+function fugir() {
+
+    const dx = irma.offsetLeft - px;
+    const dy = irma.offsetTop - py;
+
+    const distancia = Math.sqrt(dx * dx + dy * dy);
+
+   if (distancia < 150) {
+
+    document.getElementById("falaIrma").textContent =
+        "😱 Ela está me alcançando!";
+
+    escolherDestinoSeguro();
+}
+}
+
+
+function verificarColisao() {
+
+    const distancia = Math.sqrt(
+        (px - irma.offsetLeft) ** 2 +
+        (py - irma.offsetTop) ** 2
+    );
+
+    if(distancia < 50){
+
+        podeCapturar = true;
+
+        statusText.textContent =
+        "⚡ Aperte ESPAÇO ou PEGAR!";
+
+    }else{
+
+        podeCapturar = false;
+
+        statusText.textContent =
+        "🎯 Pegue Maythe";
+    }
+
+}
+function colidiu(a, b) {
+    return (
+        a.left < b.right &&
+        a.right > b.left &&
+        a.top < b.bottom &&
+        a.bottom > b.top
+    );
+
+}
+function capturar(){
+
+    if(!podeCapturar) return;
+
+    statusText.textContent =
+        "🎉 Você pegou Maythe!";
+
+    clearInterval(intervaloIrma);
+    clearInterval(intervaloFugir);
+
+    irma.style.display = "none";
+
+    mostrarCenaFinal();
+}
+   
+    </script>
+    <script>
+document.getElementById("startBtn").addEventListener("click", () => {
+    document
+.getElementById("capturarBtn")
+.addEventListener("click", capturar);
+
+    document.getElementById("intro").style.display = "none";
+
+    atualizar();
+
+    intervaloIrma = setInterval(moverIrma, 3000);
+    intervaloFugir = setInterval(fugir, 300);
+
+});
+    </script>
+</body>  
