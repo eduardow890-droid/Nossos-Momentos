@@ -1,20 +1,74 @@
 const canvas = document.getElementById("jogo");
 const ctx = canvas.getContext("2d");
 
-const sprite = new Image();
-sprite.src = "images/personagem.png";
+const sprites = {
+
+    frente: [
+        new Image(),
+        new Image()
+    ],
+
+    costas: [
+        new Image(),
+        new Image()
+    ],
+
+    esquerda: [
+        new Image(),
+        new Image()
+    ],
+
+    direita: [
+        new Image(),
+        new Image()
+    ]
+
+};
+
+sprites.frente[0].src = "images/frente1.png";
+sprites.frente[1].src = "images/frente2.png";
+
+sprites.costas[0].src = "images/costas1.png";
+sprites.costas[1].src = "images/costas2.png";
+
+sprites.esquerda[0].src = "images/esquerda1.png";
+sprites.esquerda[1].src = "images/esquerda2.png";
+
+sprites.direita[0].src = "images/direita1.png";
+sprites.direita[1].src = "images/direita2.png";
+
+Object.values(sprites).forEach(lista => {
+
+    lista.forEach(img => {
+
+        img.onload = () => {
+            console.log("OK:", img.src);
+        };
+
+        img.onerror = () => {
+            console.log("ERRO:", img.src);
+        };
+
+    });
+
+});
+
+
+const velocidadeAnimacao = 8;
 
 const mapa = new Image();
 
 const jogador = {
 
-    x: 100,
-    y: 370,
+    x:100,
+    y:370,
 
-    largura: 80,
-    altura: 80,
+    largura:80,
+    altura:80,
 
-    velocidade: 4
+    velocidade:4,
+
+    direcao:"frente" // 0 baixo, 1 esquerda, 2 direita, 3 cima
 
 };
 const camera = {
@@ -279,46 +333,76 @@ function proximaFala(){
 function atualizar(){
 
     if(dialogoAtivo){
-    return;
-}
+        return;
+    }
 
     let novoX = jogador.x;
     let novoY = jogador.y;
 
-    if(teclas["ArrowRight"]){
-        novoX += jogador.velocidade;
-    }
+    let andando = false;
 
-    if(teclas["ArrowLeft"]){
-        novoX -= jogador.velocidade;
-    }
+if(teclas["ArrowUp"]){
+    novoY -= jogador.velocidade;
+    jogador.direcao = "costas";
+    andando = true;
+}
 
-    if(teclas["ArrowUp"]){
-        novoY -= jogador.velocidade;
-    }
+if(teclas["ArrowDown"]){
+    novoY += jogador.velocidade;
+    jogador.direcao = "frente";
+    andando = true;
+}
 
-    if(teclas["ArrowDown"]){
-        novoY += jogador.velocidade;
-    }
+if(teclas["ArrowLeft"]){
+    novoX -= jogador.velocidade;
+    jogador.direcao = "esquerda";
+    andando = true;
+}
 
-    // Movimento horizontal
+if(teclas["ArrowRight"]){
+    novoX += jogador.velocidade;
+    jogador.direcao = "direita";
+    andando = true;
+}
+
     if(podeMover(novoX, jogador.y)){
         jogador.x = novoX;
     }
 
-    // Movimento vertical
     if(podeMover(jogador.x, novoY)){
         jogador.y = novoY;
     }
 
+    if(andando){
+
+        contadorAnimacao++;
+
+        if(contadorAnimacao >= 10){
+
+            contadorAnimacao = 0;
+
+            frameAtual = (frameAtual + 1) % 2;
+        }
+
+    }else{
+
+    frameAtual = 0;
+    contadorAnimacao = 0;
+
 }
 
-function podeAndar(x, y){
+} 
+
+// <-- FECHA A FUNÇÃO
+function podeAndar(x,y){
 
     if(
-        canvasColisao.width === 0
+        x < 0 ||
+        y < 0 ||
+        x >= larguraMapa ||
+        y >= alturaMapa
     ){
-        return true;
+        return false;
     }
 
     const pixel =
@@ -498,17 +582,27 @@ document.addEventListener("keydown", (e) => {
 
 });
 
+let frameAtual = 0;
+let contadorAnimacao = 0;
+
+
+
 function desenharJogador(){
 
     ctx.drawImage(
-        sprite,
-        jogador.x * escalaMapa,
-        jogador.y * escalaMapa,
-        jogador.largura * escalaMapa,
-        jogador.altura * escalaMapa
+
+        sprites[jogador.direcao][frameAtual],
+
+        jogador.x,
+        jogador.y,
+
+        jogador.largura,
+        jogador.altura
+
     );
 
 }
+
 
 
 function atualizarCamera(){
@@ -545,29 +639,23 @@ function atualizarCamera(){
 
 function desenhar(){
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     ctx.save();
 
+    ctx.scale(escalaMapa, escalaMapa);
+
     ctx.translate(
-        -camera.x * escalaMapa,
-        -camera.y * escalaMapa
+        -camera.x,
+        -camera.y
     );
 
     desenharMapa();
-
     desenharJogador();
 
     ctx.restore();
 
     mostrarMensagem();
-
-
 }
 function desenharMapa(){
 
@@ -575,8 +663,8 @@ function desenharMapa(){
         mapa,
         0,
         0,
-        larguraMapa * escalaMapa,
-        alturaMapa * escalaMapa
+        larguraMapa,
+        alturaMapa
     );
 
 }

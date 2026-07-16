@@ -3,29 +3,22 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body{
-            background-color: #111827;
-        }
-#game {
-    width:800px;
+body{
+    margin:0;
+    overflow:hidden;
+    background:#111827;
+}
+#game{
 
-    height:500px;
-
-    border: 2px solid black;
+    width:100vw;
+    height:100vh;
     position: relative;
     overflow: hidden;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 }
-@media (max-width: 900px){
 
-    #game{
-        width:95vw;
-        height:60vh;
-    }
-
-}
 
 #player{
     width: 48px;
@@ -37,13 +30,19 @@
     z-index:10;
 }
 
-#irma {
-    width: 40px;
-    height: 40px;
+#cachorra{
+
+    width:90px;
+    height:90px;
+
+    position:absolute;
+
+    left:1020px;
+
+    top:70px;
+
     z-index:10;
-    position: absolute;
-    left: 500px;
-    top: 300px;
+
 }
 
 #intro{
@@ -114,134 +113,27 @@
     transform: scale(1.05);
     background: #16a34a;
 }
-#painelIrma{
-    position: absolute;
-    left: 850px;
-    top: 70px;
-
-    width: 300px;
-
-    color: white;
-}
-#painelIrma{
-
-    background: rgba(255,255,255,.05);
-
-    border-radius:20px;
-
-    padding: 10px;
-
-    border:1px solid rgba(255,255,255,.1);
-}
 
 
-#retratoIrma{
-    width: 120px;
-    image-rendering: pixelated;
-    display: block;
-    margin: auto;
-}
 
-#falaIrma{
-    background: white;
-    color: #222;
 
-    padding: 20px;
 
-    border-radius: 20px;
 
-    font-size: 22px;
-    font-weight: bold;
 
-    box-shadow: 0 5px 15px rgba(0,0,0,.4);
 
-    position: relative;
-}
-#falaIrma::before{
-    content:"";
-
-    position:absolute;
-
-    top:-15px;
-    left:40px;
-
-    border-left:15px solid transparent;
-    border-right:15px solid transparent;
-    border-bottom:15px solid white;
-}
-#retratoIrma{
-    width:220px;
-
-    display:block;
-    margin:auto;
-
-    border-radius:20px;
-
-    border:4px solid white;
-
-    box-shadow:0 0 25px rgba(255,255,255,.2);
-}
-#nomeIrma{
-    text-align:center;
-    color:white;
-}
-#capturarBtn{
-    position: fixed;
-
-    right: 20px;
-    bottom: 20px;
-
-    width: 120px;
-    height: 120px;
-
-    border-radius: 50%;
-
-    border: none;
-
-    background: #ef4444;
-    color: white;
-
-    font-size: 22px;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-@media(max-width:900px){
-
-    body{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-    }
-
-    #painelIrma{
-        position:relative;
-
-        left:auto;
-        top:auto;
-
-        width:95%;
-
-        margin:10px auto;
-    }
-
-    #game{
-        width:95vw;
-        height:50vh;
-    }
-
-}
 #mapa{
+
     position:absolute;
 
-    left:0;
-    top:0;
+    left:50%;
+    top:50%;
 
-    width:100%;
-    height:100%;
+    width:115%;
+    height:115%;
 
-    object-fit:contain;
+    transform:translate(-50%,-50%);
+
+    object-fit:cover;
 
     z-index:0;
 }
@@ -276,37 +168,7 @@
     display:none;
 }
 
-@media(max-width:900px){
 
-    #joystick{
-        display:block;
-    }
-
-}
-@media (max-width: 430px){
-
-    #game{
-        width: 95vw;
-        height: 50vh;
-    }
-
-    #capturarBtn{
-
-        width: 90px;
-        height: 90px;
-
-        font-size: 18px;
-    }
-
-    #joystick button{
-
-        width: 65px;
-        height: 65px;
-
-        font-size: 24px;
-    }
-
-}
 #cenaFinal{
     position:fixed;
     inset:0;
@@ -324,6 +186,26 @@
     transition:.8s;
 
     z-index:99999;
+}
+#status{
+
+    position:fixed;
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:9999;
+
+    color:white;
+
+    background:rgba(0,0,0,.5);
+
+    padding:10px 20px;
+
+    border-radius:15px;
+
 }
 
 #cenaFinal.ativo{
@@ -454,35 +336,43 @@
         0 0 35px rgba(34,197,94,.9);
 
 }
+#agua{
+    width:40px;
+    height:40px;
+
+    position:absolute;
+
+    left:140px;
+    top:520px;
+}
+
+#bife{
+    width:40px;
+    height:40px;
+    position:absolute;
+    left:850px;
+    top:320px;
+    z-index:10;
+}
 
     </style>
 </head>  
 <body>
-    <div id="painelIrma">
-    <h2 id="nomeIrma">🌟 Maythe</h2>
-    <img src="images/irmaReal.png" id="retratoIrma">
 
-    <div id="falaIrma">
-        Você nunca vai me pegar! 😝
-    </div>
-
-</div>
 <div id="intro">
 
     <div id="intro-box">
 
-        <h1>🏃 Pique-Pega com a Maninha</h1>
+        <h1>🐶 A Cachorrinha das Colinas</h1>
 
-        <p>
-            Sua irmã mais nova resolveu aprontar mais uma vez.
-            Depois de dizer que você nunca conseguiria alcançá-la,
-            ela saiu correndo pelo condomínio.
-        </p>
+<p>
+Uma cachorrinha perdida foi vista no topo das Colinas.
+</p>
 
-        <p>
-            Desvie das árvores e obstáculos, encontre o melhor caminho
-            e prove que ela estava errada!
-        </p>
+<p>
+Encontre uma garrafa de água e um pedaço de bife.
+Depois leve os itens para ela e conquiste sua confiança.
+</p>
 
         <h3>🎮 Controles</h3>
 
@@ -496,11 +386,16 @@
     </div>
 
 </div></div>
-    <p id="status">Pegue sua irmã!</p>
+    <p id="status">
+🐶 Encontre água e bife para ajudar Amora.
+</p>
+
 <div id="game">
-    <img src="images/condo.png" id="mapa"></img>
-    <img src="images/tataFRENTE.png" id="player"></img>
-    <img src="images/irmaFRENTE.png" id="irma"></img>
+    <img src="images/fundoColinas.jpeg" id="mapa">
+    <img src="images/tataFRENTE.png" id="player">
+    <img src="images/agua.png" id="agua">
+    <img src="images/bife.png" id="bife">
+    <img src="images/amora.png" id="cachorra">
     
 
     <div class="obstaculo" style="left:200px;top:100px;"></div>
@@ -519,9 +414,7 @@
     <button id="down">⬇️</button>
 
 </div>
-<button id="capturarBtn">
-    ✋ PEGAR
-</button>
+
 
 <div id="cenaFinal">
 
@@ -544,54 +437,27 @@
 </div>
     <script>
         const player = document.getElementById("player");
-const irma = document.getElementById("irma");
+
+        const agua =
+document.getElementById("agua");
+
+const bife =
+document.getElementById("bife");
+
+const cachorra =
+document.getElementById("cachorra");
+
 const statusText = document.getElementById("status");
-
-let alvoX = 500;
-let alvoY = 300;
-
-let podeCapturar = false;
-
-const pontosEstrategicos = [
-
-    { x: 430, y: 240, nome: "Playground" },
-
-    { x: 540, y: 100, nome: "Bloco B" },
-
-    { x: 560, y: 350, nome: "Bloco D" },
-
-    { x: 390, y: 240, nome: "Jardim" },
-
-    { x: 390, y: 430, nome: "Portaria" }
-
-];
-
-const falas = [
-    "Você nunca vai me pegar! 😝",
-    "Sou rápida demais! 🏃",
-    "Tenta outra vez! 😂",
-    "Nem chegou perto! 🤭",
-    "Você corre igual uma tartaruga! 🐢",
-    "Aposto que vai desistir! 😆",
-    "Cadê você? Não estou vendo! 👀"
-];
-const dialogos = [
-{
-    fala:"😝 Você nunca vai me pegar!",
-    foto:"images/irmaReal.png"
-},
-{
-    fala:"😂 Tenta outra vez!",
-    foto:"images/irma2.png"
-}];
-
-let intervaloIrma;
-let intervaloFugir;
 
 let cenaFinalIniciada = false;
 
 let px = 100;
 let py = 100;
+
+let temAgua = false;
+let temBife = false;
+let cachorraDomesticada = false;
+
 const teclas = {};
 
 document.addEventListener("keydown", (e) => {
@@ -622,25 +488,26 @@ function criarControleTouch(id, tecla){
 
 }
 
+document.addEventListener(
+    "keydown",
+    (e)=>{
+
+        if(e.code === "KeyE"){
+
+            interagir();
+
+        }
+
+    }
+);
+
+
 criarControleTouch("up","w");
 criarControleTouch("down","s");
 criarControleTouch("left","a");
 criarControleTouch("right","d");
 
-document.addEventListener("keydown", (e)=>{
 
-    if(e.code === "Space"){
-
-        capturar();
-clearInterval(intervaloFugir);
-
-irma.style.display = "none";
-
-mostrarCenaFinal();
-
-    }
-
-});
 
 function esperar(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -691,20 +558,39 @@ async function mostrarCenaFinal(){
     const tela = document.getElementById("cenaFinal");
 
     tela.classList.add("ativo");
+await escrever(
+"🐶 Amora estava perdida e precisava de ajuda."
+);
 
-    await escrever("😅 Maythe: Tá bom... você venceu.");
+await esperar(2500);
 
-    await esperar(2500);
+await escrever(
+"💧 Você compartilhou sua água."
+);
 
-    await escrever("😊 Mas sabe... brincar com você sempre foi divertido.");
+await esperar(2500);
 
-    await esperar(2500);
+await escrever(
+"🥩 Você dividiu sua comida."
+);
 
-    await escrever("💛 Algumas lembranças merecem ser guardadas para sempre.");
+await esperar(2500);
 
-    await esperar(2500);
+await escrever(
+"💛 E assim nasceu uma nova amizade."
+);
 
-    await escrever("📷 Esta foto representa um momento especial.");
+await esperar(2500);
+
+await escrever(
+"📷 Algumas memórias são encontradas."
+);
+
+await esperar(2500);
+
+await escrever(
+"✨ Outras são criadas."
+);
 
     document
         .getElementById("fotoMemoria")
@@ -760,8 +646,24 @@ if (teclas["d"]) {
         novoY += dy * velocidade;
     }
 
-    novoX = Math.max(0, Math.min(novoX, 760));
-    novoY = Math.max(0, Math.min(novoY, 460));
+  const game =
+document.getElementById("game");
+
+novoX = Math.max(
+    0,
+    Math.min(
+        novoX,
+        game.clientWidth - player.offsetWidth
+    )
+);
+
+novoY = Math.max(
+    0,
+    Math.min(
+        novoY,
+        game.clientHeight - player.offsetHeight
+    )
+);
 
     player.style.left = novoX + "px";
     player.style.top = novoY + "px";
@@ -780,129 +682,44 @@ if (teclas["d"]) {
         px = novoX;
         py = novoY;
     }
-    
-    verificarColisao();
+    if(
+    !temAgua &&
+    colidiu(
+        player.getBoundingClientRect(),
+        agua.getBoundingClientRect()
+    )
+){
 
-let velocidadeIrma = 2;
-
-const distanciaJogador =    
-Math.sqrt(
-    (px - irma.offsetLeft) ** 2 +
-    (py - irma.offsetTop) ** 2
-);
-
-if (distanciaJogador < 150) {
-    velocidadeIrma = 5;
+    statusText.textContent =
+    "💧 Aperte E para pegar a água";
 }
+else if(
+    !temBife &&
+    colidiu(
+        player.getBoundingClientRect(),
+        bife.getBoundingClientRect()
+    )
+){
 
-const dxIrma = alvoX - irma.offsetLeft;
-const dyIrma = alvoY - irma.offsetTop;
+    statusText.textContent =
+    "🥩 Aperte E para pegar o bife";
+}
+else if(
+    temAgua &&
+    temBife &&
+    colidiu(
+        player.getBoundingClientRect(),
+        cachorra.getBoundingClientRect()
+    )
+){
 
-const distanciaIrma =
-    Math.sqrt(dxIrma * dxIrma + dyIrma * dyIrma);
-
-if (distanciaIrma > 1) {
-
-    irma.style.left =
-        (irma.offsetLeft +
-        dxIrma / distanciaIrma * velocidadeIrma) + "px";
-
-    irma.style.top =
-        (irma.offsetTop +
-        dyIrma / distanciaIrma * velocidadeIrma) + "px";
+    statusText.textContent =
+    "🐶 Aperte E para ajudar Amora";
 }
 
     requestAnimationFrame(atualizar);
 }
 
-
-function trocarFala(){
-
-    const sorteio =
-        dialogos[Math.floor(Math.random() * dialogos.length)];
-
-    document.getElementById("falaIrma").textContent =
-        sorteio.fala;
-
-    document.getElementById("retratoIrma").src =
-        sorteio.foto;
-}
-
-setInterval(trocarFala, 3000);
-
-function escolherDestinoSeguro() {
-
-    let melhorLocal = pontosEstrategicos[0];
-    let maiorDistancia = 0;
-
-    pontosEstrategicos.forEach(local => {
-
-        const distancia = Math.sqrt(
-            (local.x - px) ** 2 +
-            (local.y - py) ** 2
-        );
-
-        if(distancia > maiorDistancia){
-
-            maiorDistancia = distancia;
-            melhorLocal = local;
-
-        }
-
-    });
-
-    alvoX = melhorLocal.x;
-    alvoY = melhorLocal.y;
-
-    document.getElementById("falaIrma").textContent =
-        "🏃 Vou para " + melhorLocal.nome + "!";
-}
-
-function moverIrma() {
-
-escolherDestinoSeguro();
-}
-
-function fugir() {
-
-    const dx = irma.offsetLeft - px;
-    const dy = irma.offsetTop - py;
-
-    const distancia = Math.sqrt(dx * dx + dy * dy);
-
-   if (distancia < 150) {
-
-    document.getElementById("falaIrma").textContent =
-        "😱 Ela está me alcançando!";
-
-    escolherDestinoSeguro();
-}
-}
-
-
-function verificarColisao() {
-
-    const distancia = Math.sqrt(
-        (px - irma.offsetLeft) ** 2 +
-        (py - irma.offsetTop) ** 2
-    );
-
-    if(distancia < 50){
-
-        podeCapturar = true;
-
-        statusText.textContent =
-        "⚡ Aperte ESPAÇO ou PEGAR!";
-
-    }else{
-
-        podeCapturar = false;
-
-        statusText.textContent =
-        "🎯 Pegue Maythe";
-    }
-
-}
 function colidiu(a, b) {
     return (
         a.left < b.right &&
@@ -912,29 +729,74 @@ function colidiu(a, b) {
     );
 
 }
-function capturar(){
+function interagir(){
 
-    if(!podeCapturar) return;
+    const jogador =
+    player.getBoundingClientRect();
 
-    statusText.textContent =
-        "🎉 Você pegou Maythe!";
+    if(
+        !temAgua &&
+        colidiu(
+            jogador,
+            agua.getBoundingClientRect()
+        )
+    ){
 
-    clearInterval(intervaloIrma);
-    clearInterval(intervaloFugir);
+        temAgua = true;
 
-    irma.style.display = "none";
+        agua.style.display = "none";
 
-document.getElementById("painelIrma").style.display="none";
+        statusText.textContent =
+        "🥩 Ótimo! Agora procure algo para alimentar Amora.";
 
-    mostrarCenaFinal();
+        return;
+    }
+
+    if(
+        !temBife &&
+        colidiu(
+            jogador,
+            bife.getBoundingClientRect()
+        )
+    ){
+
+        temBife = true;
+
+        bife.style.display = "none";
+
+        statusText.textContent =
+        "🐶 Leve a água e o bife até Amora no topo da colina.";
+
+        return;
+    }
+
+    if(
+        temAgua &&
+        temBife &&
+        colidiu(
+            jogador,
+            cachorra.getBoundingClientRect()
+        )
+    ){
+
+        cachorraDomesticada = true;
+
+        statusText.textContent =
+        "💛 Amora agora confia em você.";
+
+        mostrarCenaFinal();
+
+    }
+
 }
+
 function concluirCondominio(){
 
     const progresso = JSON.parse(
         localStorage.getItem("progresso")
     ) || {};
 
-    progresso.condominio = true;
+    progresso.colinas = true;
 
     localStorage.setItem(
         "progresso",
@@ -954,16 +816,11 @@ document.getElementById("voltarCasa").addEventListener("click", () => {
     </script>
     <script>
 document.getElementById("startBtn").addEventListener("click", () => {
-    document
-.getElementById("capturarBtn")
-.addEventListener("click", capturar);
+
 
     document.getElementById("intro").style.display = "none";
 
     atualizar();
-
-    intervaloIrma = setInterval(moverIrma, 3000);
-    intervaloFugir = setInterval(fugir, 300);
 
 });
     </script>
