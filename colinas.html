@@ -396,7 +396,7 @@ Depois leve os itens para ela e conquiste sua confiança.
     <img src="images/agua.png" id="agua">
     <img src="images/bife.png" id="bife">
     <img src="images/amora.png" id="cachorra">
-    
+    <img id="collisionMap" src="images/colinasColisao.jpg" style="display:none">    
 
     <div class="obstaculo" style="left:200px;top:100px;"></div>
     <div class="obstaculo" style="left:400px;top:250px;"></div>
@@ -602,6 +602,99 @@ await escrever(
 
     document.getElementById("voltarCasa").style.display = "inline-block";
 }
+const collisionImg =
+document.getElementById("collisionMap");
+
+const collisionCanvas =
+document.createElement("canvas");
+
+const collisionCtx =
+collisionCanvas.getContext("2d");
+
+let collisionData = null;
+
+collisionImg.onload = () => {
+
+    collisionCanvas.width =
+    collisionImg.width;
+
+    collisionCanvas.height =
+    collisionImg.height;
+
+    collisionCtx.drawImage(
+        collisionImg,
+        0,
+        0
+    );
+
+    collisionData =
+    collisionCtx.getImageData(
+        0,
+        0,
+        collisionImg.width,
+        collisionImg.height
+    ).data;
+};
+
+function pontoBloqueado(x,y){
+
+    if(!collisionData) return false;
+
+    const mapa =
+    document.getElementById("mapa");
+
+    const rect =
+    mapa.getBoundingClientRect();
+
+    const imgX =
+    Math.floor(
+        (x - rect.left)
+        * collisionImg.width
+        / rect.width
+    );
+
+    const imgY =
+    Math.floor(
+        (y - rect.top)
+        * collisionImg.height
+        / rect.height
+    );
+
+    if(
+        imgX < 0 ||
+        imgY < 0 ||
+        imgX >= collisionImg.width ||
+        imgY >= collisionImg.height
+    ){
+        return true;
+    }
+
+    const index =
+    (imgY * collisionImg.width + imgX) * 4;
+
+    const r = collisionData[index];
+    const g = collisionData[index + 1];
+    const b = collisionData[index + 2];
+
+    // Branco = bloqueado
+    return r > 200 && g > 200 && b > 200;
+}
+
+function colisaoJogador(x,y){
+
+    const largura = 24;
+    const altura = 24;
+
+    const offsetX = 12;
+    const offsetY = 20;
+
+    return (
+        pontoBloqueado(x + offsetX, y + offsetY) ||
+        pontoBloqueado(x + offsetX + largura, y + offsetY) ||
+        pontoBloqueado(x + offsetX, y + offsetY + altura) ||
+        pontoBloqueado(x + offsetX + largura, y + offsetY + altura)
+    );
+}
 
 
 function atualizar() {
@@ -668,20 +761,10 @@ novoY = Math.max(
     player.style.left = novoX + "px";
     player.style.top = novoY + "px";
 
-    const playerRect = player.getBoundingClientRect();
-
-    let bateu = false;
-
-    document.querySelectorAll(".obstaculo").forEach(obs => {
-        if (colidiu(playerRect, obs.getBoundingClientRect())) {
-            bateu = true;
-        }
-    });
-
-    if (!bateu) {
-        px = novoX;
-        py = novoY;
-    }
+    if(!colisaoJogador(novoX, novoY)){
+    px = novoX;
+    py = novoY;
+}
     if(
     !temAgua &&
     colidiu(
