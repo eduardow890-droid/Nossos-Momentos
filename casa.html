@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+#textofinal{
+
+    color:white;
+    font-family:"Great Vibes", cursive;
+
+    font-size:60px;
+
+    text-align:center;
+
+    width:80%;
+
+    margin:60px auto;
+
+    min-height:180px;
+
+    text-shadow:
+        0 0 10px #ff9acb,
+        0 0 20px #ff9acb;
+}
+
+#galeria{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+}
+#galeria img{
+
+    width:220px;
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+    opacity:0;
+
+    transform:
+        translateY(50px)
+        scale(.8);
+
+    filter:brightness(.8);
+
+    transition:1.5s;
+
+    box-shadow:
+    0 0 20px rgba(255,255,255,.3);
+
+}
+
+
+#galeria img.mostrar{
+
+    opacity:1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter:brightness(1);
+
+}
+
+
+body{
+
+    margin:0;
+
+    background:
+    radial-gradient(circle,#3b1c45,#000);
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    min-height:100vh;
+
+    overflow:auto;
+
+    padding-top: 50px;
+}
+</style>
+</head>
+<body>
+<div id="textofinal"></div>   
+    <div id="galeria"></div>
+ 
+
+
+    
+
+<script>
+    const fotos = [
+    "images/final1.jpg",
+    "images/final2.jpg",
+    "images/final3.jpg",
+    "images/final4.jpg",
+    "images/final5.jpg",
+    "images/final6.jpg",
+    "images/final7.jpg",
+    "images/final8.jpg",
+    "images/final9.jpg",
+    "images/final10.jpg",
+    "images/final11.jpg",
+    "images/final12.jpg",
+    "images/final13.jpg",
+    "images/final14.jpg",
+    "images/final15.jpg",
+    "images/final16.jpg",
+    "images/final17.jpg",
+    "images/final18.jpg",
+    "images/final19.jpg",
+    "images/final20.jpg",
+    "images/final21.jpg",
+    "images/final22.jpg",
+    "images/final23.jpg",
+    "images/final24.jpg",
+    "images/final25.jpg",
+    "images/final26.jpg",
+    "images/final27.jpg",
+    "images/final28.jpg",
+    "images/final29.jpg",
+    "images/final30.jpg"
+];
+
+
+let fotoAtual = 0;
+    function escrever(texto, velocidade= 40){
+
+        return new Promise(resolver =>{
+
+            const area = document.getElementById("textofinal");
+
+            area.innerHTML = "";
+
+            let i = 0;
+            
+            const time = setInterval(() => {
+                area.innerHTML += texto.charAt(i);
+                i++;
+                if(i >= texto.length){
+                    clearInterval(time);
+                    resolver();
+                }
+            }, velocidade)
+        })
+    }
+
+    function esperar(ms){
+        return new Promise(resolver =>{
+            setTimeout(resolver, ms);
+        })
+    }
+
+function mostrarFoto(){
+
+    if(fotoAtual >= fotos.length){
+        return;
+    }
+
+
+    const img=document.createElement("img");
+
+
+    img.src=fotos[fotoAtual];
+
+
+    document
+    .getElementById("galeria")
+    .appendChild(img);
+
+
+    setTimeout(()=>{
+
+        img.classList.add("mostrar");
+
+    },100);
+
+
+    fotoAtual++;
+
+}
+
+async function iniciarFinal(){
+
+    await escrever("Oi, meu amor ❤️");
+    mostrarFoto();
+    await esperar(2500);
+
+    await escrever("Se você chegou até aqui, é porque aceitou viver essa pequena aventura comigo.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Eu te amo muito.");
+     mostrarFoto();
+    await esperar(2500);
+
+    await escrever("Você é a pessoa mais incrível que já apareceu na minha vida.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Você é a luz que ilumina os meus dias e me motiva a ser uma pessoa melhor.");
+     mostrarFoto();
+    await esperar(3500);
+
+    await escrever("Sou imensamente grato por ter sido escolhido por você.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Sou feliz por compartilhar a minha vida ao seu lado.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Os momentos mais simples com você são os que guardo com mais carinho.");
+     mostrarFoto();
+    await esperar(3500);
+
+    await escrever("Adoro acordar e saber que tenho você comigo.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Amo cada detalhe seu, dos pés à cabeça.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Minha vontade é poder te dar o mundo inteiro.");
+     mostrarFoto();
+    await esperar(3000);
+
+    await escrever("Porque, sem perceber, você mudou completamente o meu mundo.");
+     mostrarFoto();
+    await esperar(3500);
+
+    await escrever("Obrigado por cada sorriso, cada abraço e por fazer parte da minha vida.");
+     mostrarFoto();
+    await esperar(3500);
+
+    await escrever("Espero viver muitos outros capítulos dessa história ao seu lado.");
+     mostrarFoto();
+    await esperar(3500);
+
+await escrever("❤️ Eu te amo infinitamente. ❤️");
+
+while(fotoAtual < fotos.length){
+
+    mostrarFoto();
+
+    await esperar(800);
+
+}
+}
+iniciarFinal();
+    </script>
+</body>
+</html>

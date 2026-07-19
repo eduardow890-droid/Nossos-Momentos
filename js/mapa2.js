@@ -497,7 +497,7 @@ function atualizarObjetivo(){
     else{
 
         historia.innerHTML =
-        "Todas as memórias foram recuperadas.";
+        "Todas as memórias foram recuperadas. entre em casa";
 
     }
 
